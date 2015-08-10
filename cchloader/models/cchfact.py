@@ -2,7 +2,7 @@ from marshmallow import Schema, fields
 
 
 class CchFactSchema(Schema):    
-    name = fields.String(position=0)
+    name = fields.String(position=0, required=True)
     datetime = fields.DateTime(position=1, format='%Y/%m/%d %H:%M')
     season = fields.Select(position=2, choices=[0, 1])
     ai = fields.Integer(position=3)

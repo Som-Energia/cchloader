@@ -52,8 +52,8 @@ class GZFile (CompressedFile):
 
     def __init__(self, filename):
         super(GZFile, self).__init__(filename)
-        self.files = self.list()        
         self.fd = self.open()
+        self.files = self.list()
 
     def open(self):
         return gzip.GzipFile(self.filename)
