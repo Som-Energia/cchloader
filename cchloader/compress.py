@@ -69,7 +69,8 @@ class GZFile (CompressedFile):
             fname = self.fd.name
             if fname.endswith('.gz'):
                 fname = fname[:-3]
-            return [fname]
+            gf.seek(0)
+            return iter([fname])
 
         if flag & gzip.FEXTRA:
             # Read & discard the extra field, if present
@@ -83,7 +84,7 @@ class GZFile (CompressedFile):
                 break
             fname.append(s)
         gf.seek(0)
-        return [''.join(fname)]
+        return iter([''.join(fname)])
 
     def get(self, filename):
         return self.fd
