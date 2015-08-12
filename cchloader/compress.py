@@ -4,6 +4,7 @@
 import struct
 import zipfile
 import gzip
+import bz2
 
 class CompressedFile (object):
     magic = None
@@ -90,14 +91,39 @@ class GZFile (CompressedFile):
         return self.fd
 
 
+class BZFile (CompressedFile):
+    magic = '\x42\x5a\x68'
+    file_type = 'bz2'
+    mime_type = 'compressed/bz'
+
+    def __init__(self, filename):
+        super(BZFile, self).__init__(filename)
+        self.fd = self.open()
+        self.files = self.list()
+
+    def open(self):
+        return bz2.BZ2File(self.filename)
+
+    def list(self):
+        # BZ2 file does not include original filename
+        fname = self.fd.name
+        if fname.endswith('.bz2'):
+            fname = fname[:-3]
+        return iter([fname])
+
+    def get(self, filename):
+        return self.fd
+
+
 class FileTypeNotSupportedException(Exception):
     pass
+
 
 def is_compressed_file(filename):
     with file(filename, 'rb') as f:
         start_of_file = f.read(5)
         f.seek(0)
-        for cls in (ZIPFile, GZFile):
+        for cls in (ZIPFile, GZFile, BZFile):
             if cls.is_magic(start_of_file):
                 return True
         return False
@@ -106,7 +132,7 @@ def get_compressed_file(filename):
     with file(filename, 'rb') as f:
         start_of_file = f.read(5)
         f.seek(0)
-        for cls in (ZIPFile, GZFile):
+        for cls in (ZIPFile, GZFile, BZFile):
             if cls.is_magic(start_of_file):
                 return cls(filename)
 
