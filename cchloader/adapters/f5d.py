@@ -27,7 +27,7 @@ class F5dBaseAdapter(Schema):
     def fix_source(self, data):
         valid_values = [1, 2, 3, 4, 5, 6]
         source = data.get('source')
-        if source and source.isdigit() and source in map(str, valid_values):
+        if source and source.isdigit() and int(source) in valid_values:
             data['source'] = int(source)
         else:
             data['source'] = None
