@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='cchloader',
-    version='0.1',
+    version='0.2',
     packages=find_packages(),
     url='https://github.com/Som-Energia/cchloader',
     license='GPLv3',
@@ -22,7 +22,7 @@ setup(
         "raven",
         "pymongo<3.0",
         "osconf",
-        "marshmallow>=2.0.0b2",
+        "marshmallow==2.0.0b2",
         "click"
     ],
     test_suite='',
