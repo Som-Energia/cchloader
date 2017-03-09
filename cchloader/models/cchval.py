@@ -9,3 +9,5 @@ class CchValSchema(Schema):
     season = fields.Integer(position=2, validate=OneOf([0, 1]))
     ai = fields.Integer(position=3)
     ao = fields.Integer(position=4, allow_none=True)
+
+CchValSchema()

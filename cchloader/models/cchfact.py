@@ -16,3 +16,5 @@ class CchFactSchema(Schema):
     source = fields.Integer(position=9, validate=OneOf([1, 2, 3, 4, 5, 6]))
     validated = fields.Boolean(position=10)
     bill = fields.String(position=11)
+
+CchFactSchema()
