@@ -7,7 +7,7 @@ class MongoDBBackend(BaseBackend):
     """MongoDB Backend
     """
     collection_prefix = 'tg_'
-    collections = ['cchfact', 'cchval']
+    collections = ['cchfact', 'cchval', 'f1', 'p1']
 
     def __init__(self, uri=None):
         if uri is None:
