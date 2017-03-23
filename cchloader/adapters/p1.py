@@ -32,5 +32,52 @@ class P1BaseAdapter(Schema):
         else:
             data['source'] = None
 
+    @pre_load
+    def valid_measure(self, data):
+        aiquality = data.get('aiquality')
+        aoquality = data.get('aoquality')
+        r1quality = data.get('r1quality')
+        r2quality = data.get('r2quality')
+        r3quality = data.get('r3quality')
+        r4quality = data.get('r4quality')
+        reserve1quality = data.get('reserve1quality')
+        reserve2quality = data.get('reserve2quality')
+
+        aivalid = 0
+        if aiquality < 128:
+            aivalid = 1
+        aovalid = 0
+        if aoquality < 128:
+            aovalid = 1
+        r1valid = 0
+        if r1quality < 128:
+            r1valid = 1
+        r2valid = 0
+        if r2quality < 128:
+            r2valid = 1
+        r3valid = 0
+        if r3quality < 128:
+            r3valid = 1
+        r4valid = 0
+        if r4quality < 128:
+            r4valid = 1
+        res1valid = 0
+        if reserve1quality < 128:
+            res1valid = 1
+        res2valid = 0
+        if reserve2quality < 128:
+            res2valid = 1
+
+        data['aivalid'] = aivalid
+        data['aovalid'] = aovalid
+        data['r1valid'] = r1valid
+        data['r2valid'] = r2valid
+        data['r3valid'] = r3valid
+        data['r4valid'] = r4valid
+        data['res1valid'] = res1valid
+        data['res2valid'] = res2valid
+
+        return data
+
 class P1Adapter(P1BaseAdapter, CchAdapter, P1Schema):
     pass
