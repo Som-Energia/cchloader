@@ -5,7 +5,7 @@ from marshmallow.validate import OneOf
 
 class P1Schema(Schema):
 
-    valid_quality = range(0,257)
+    valid_quality = range(0,256)
 
     name = fields.String(position=0, required=True)
     measure_type = fields.Integer(position=1) # hauria de ser sempre 11
