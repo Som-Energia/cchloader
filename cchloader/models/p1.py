@@ -6,13 +6,14 @@ from marshmallow.validate import OneOf
 class P1Schema(Schema):
 
     valid_quality = range(0,256)
+    valid_activa_quality = range(0,128)
 
     name = fields.String(position=0, required=True)
     measure_type = fields.Integer(position=1) # hauria de ser sempre 11
     datetime = fields.DateTime(position=2, format='%Y/%m/%d %H:%M:%S')
     season = fields.Integer(position=3, validate=OneOf([0, 1]))
     ai = fields.Integer(position=4)
-    aiquality = fields.Integer(position=5, validate=OneOf(valid_quality))
+    aiquality = fields.Integer(position=5, validate=OneOf(valid_activa_quality))
     ao = fields.Integer(position=6, allow_none=True)
     aoquality = fields.Integer(position=7, allow_none=True,
                                validate=OneOf(valid_quality))
