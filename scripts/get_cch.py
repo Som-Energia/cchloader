@@ -12,7 +12,7 @@ from urlparse import urlparse
                 help='Dirección del servidor')
 @click.option('-p', '--port', default=8069, help='Puerto servidor ERP',
                 type=click.INT)
-@click.option('-d', '--database', help='Nombre de la base de datos')
+@click.option('-d', '--db', help='Nombre de la base de datos')
 @click.option('-u', '--user', default='admin', help='Usuario del servidor')
 @click.option('-w', '--password', default='admin', help='Contraseña usuario')
 
@@ -21,7 +21,7 @@ def config_connection(**kwargs):
         'erp':
             {
                 'uri': '{}:{}'.format(kwargs['server'], kwargs['port']),
-                'db': kwargs['database'],
+                'db': kwargs['db'],
                 'user': kwargs['user'],
                 'password': kwargs['password']
             }
@@ -44,5 +44,5 @@ def get_cch(c):
          c.TgComerReader.reader([provider['id']])
 
 if __name__ == "__main__":
-   config_connection()
+   config_connection(auto_envvar_prefix='PEEK')
 
