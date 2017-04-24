@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+# Script to load all configured and enabled providers on PowerERP
+
 import click
 import os
 from erppeek import Client
