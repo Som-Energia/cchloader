@@ -9,7 +9,14 @@ from cchloader.parsers.parser import Parser, register
 
 class F1(Parser):
 
-    pattern = '^F1_(\d{4})_(\d{4})(\d{2})(\d{2})_(\d{4})(\d{2})(\d{2}).(\d)'
+    patterns = [
+        # Documented
+        '^F1_(\d{4})_(\d{4})(\d{2})(\d{2})_(\d{4})(\d{2})(\d{2}).(\d)',
+        # Fenosa
+        '^F1_(\d{4})_(\d{4})_(\d{4})(\d{2})(\d{2})_(\d{4})(\d{2})(\d{2}).(\d)',
+        # Endesa
+        '^F1_(\d{4})_(\d{4})(\d{2})(\d{2}).(\d)',
+    ]
     encoding = "iso-8859-15"
     delimiter = ';'
 

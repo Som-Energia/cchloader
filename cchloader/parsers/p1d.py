@@ -9,7 +9,7 @@ from cchloader.parsers.parser import Parser, register
 
 class P1D(Parser):
 
-    pattern = '^P1D_(\d{4})_(\d{4})_(\d{4})(\d{2})(\d{2}).(\d)'
+    patterns = ['^P1D_(\d{4})_(\d{4})_(\d{4})(\d{2})(\d{2}).(\d)']
     encoding = "iso-8859-15"
     delimiter = ';'
 

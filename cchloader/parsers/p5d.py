@@ -9,7 +9,7 @@ from cchloader.parsers.parser import Parser, register
 
 class P5d(Parser):
 
-    pattern = '^P5D_(\d+)_(\d{4})_(\d{4})(\d{2})(\d{2})'
+    patterns = ['^P5D_(\d+)_(\d{4})_(\d{4})(\d{2})(\d{2})']
     encoding = "iso-8859-15"
     delimiter = ';'
 
