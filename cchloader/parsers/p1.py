@@ -9,11 +9,14 @@ from cchloader.parsers.parser import Parser, register
 
 class P1(Parser):
 
-    patterns = ['^P1_(\d{4})_(\d{4})(\d{2})(\d{2})_(\d{4})(\d{2})(\d{2}).(\d)',
-                '^P1_(\d{4})_(\d{4})_(\d{4})(\d{2})(\d{2})_(\d{4})(\d{2})(\d{'
-                '2}).(\d)',
-                '^P1_(\d{4})_(\d{4})(\d{2})(\d{2}).(\d)',
-                ]
+    patterns = [
+        # Documented
+        '^P1_(\d{4})_(\d{4})(\d{2})(\d{2})_(\d{4})(\d{2})(\d{2}).(\d)',
+        # Fenosa
+        '^P1_(\d{4})_(\d{4})_(\d{4})(\d{2})(\d{2})_(\d{4})(\d{2})(\d{2}).(\d)',
+        # Endesa
+        '^P1_(\d{4})_(\d{4})(\d{2})(\d{2}).(\d)',
+    ]
     encoding = "iso-8859-15"
     delimiter = ';'
 
