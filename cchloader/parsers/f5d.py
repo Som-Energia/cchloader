@@ -9,7 +9,7 @@ from cchloader.parsers.parser import Parser, register
 
 class F5d(Parser):
 
-    pattern = '^F5D_(\d+)_0762_(\d{4})(\d{2})(\d{2})'
+    pattern = '^F5D_(\d+)_(\d{4})_(\d{4})(\d{2})(\d{2})'
     encoding = "iso-8859-15"
     delimiter = ';'
 

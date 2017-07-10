@@ -1,4 +1,4 @@
-from marshmallow import Schema
+from marshmallow import Schema, post_load
 from marshmallow.decorators import tag_processor
 from cchloader.models import Document
 
@@ -16,5 +16,6 @@ class CchAdapter(Schema):
     """Base Cch Adapter.
     """
 
+    @post_load
     def make_object(self, data):
         return Document(data, adapter=self)
