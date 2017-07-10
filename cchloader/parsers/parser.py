@@ -41,7 +41,8 @@ class Parser(object):
     @classmethod
     def detect(cls, cch_file):
         for pattern in cls.patterns:
-            return re.match(pattern, os.path.basename(cch_file))
+            if re.match(pattern, os.path.basename(cch_file)):
+                return True
         return False
 
     def parse_line(self, line):
