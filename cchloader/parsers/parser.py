@@ -36,11 +36,12 @@ class Parser(object):
     """
 
     encoding = "iso-8859-15"
+    patterns = []
 
     @classmethod
     def detect(cls, cch_file):
-        if cls.pattern:
-            return re.match(cls.pattern, os.path.basename(cch_file))
+        for pattern in cls.patterns:
+            return re.match(pattern, os.path.basename(cch_file))
         return False
 
     def parse_line(self, line):
