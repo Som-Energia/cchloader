@@ -33,7 +33,7 @@ class P1BaseAdapter(Schema):
             data['source'] = None
 
     @pre_load
-    def fix_endesa_validated(self, data):
+    def fix_validated(self, data):
         source = data.get('validated')
         if not source:
             data['validated'] = 0
