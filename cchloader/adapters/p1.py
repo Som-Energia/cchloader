@@ -33,6 +33,12 @@ class P1BaseAdapter(Schema):
             data['source'] = None
 
     @pre_load
+    def fix_validated(self, data):
+        source = data.get('validated')
+        if not source:
+            data['validated'] = 0
+
+    @pre_load
     def valid_measure(self, data):
         aoquality = data.get('aoquality')
         r1quality = data.get('r1quality')
