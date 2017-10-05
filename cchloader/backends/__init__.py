@@ -45,7 +45,7 @@ def get_backend(url):
     :param url: URL for identify a backend.
     """
     config = urlparse(url)
-    backend = config['backend']
+    backend = config.get('backend', False)
     if backend not in _AVAILABLE_BACKENDS:
         raise Exception(
             'Backend {} is not available/registered'.format(backend)
