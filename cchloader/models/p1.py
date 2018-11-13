@@ -12,21 +12,21 @@ class P1Schema(Schema):
     measure_type = fields.Integer(position=1) # hauria de ser sempre 11
     datetime = fields.DateTime(position=2, format='%Y/%m/%d %H:%M:%S')
     season = fields.Integer(position=3, validate=OneOf([0, 1]))
-    ai = fields.Integer(position=4)
+    ai = fields.Float(position=4)
     aiquality = fields.Integer(position=5, validate=OneOf(valid_activa_quality))
-    ao = fields.Integer(position=6, allow_none=True)
+    ao = fields.Float(position=6, allow_none=True)
     aoquality = fields.Integer(position=7, allow_none=True,
                                validate=OneOf(valid_quality))
-    r1 = fields.Integer(position=8, allow_none=True)
+    r1 = fields.Float(position=8, allow_none=True)
     r1quality = fields.Integer(position=9, allow_none=True,
                                validate=OneOf(valid_quality))
-    r2 = fields.Integer(position=10, allow_none=True)
+    r2 = fields.Float(position=10, allow_none=True)
     r2quality = fields.Integer(position=11, allow_none=True,
                                validate=OneOf(valid_quality))
-    r3 = fields.Integer(position=12, allow_none=True)
+    r3 = fields.Float(position=12, allow_none=True)
     r3quality = fields.Integer(position=13, allow_none=True,
                                validate=OneOf(valid_quality))
-    r4 = fields.Integer(position=14, allow_none=True)
+    r4 = fields.Float(position=14, allow_none=True)
     r4quality = fields.Integer(position=15, allow_none=True,
                                validate=OneOf(valid_quality))
     reserve1 = fields.Integer(position=16, allow_none=True)
