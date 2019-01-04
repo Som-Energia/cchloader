@@ -38,7 +38,9 @@ def config_connection(**kwargs):
 
 
 def get_cch(c):
-    providers = c.TgComerProvider.read([],[])
+    # providers = c.TgComerProvider.read([],[])
+    provider_ids = c.TgComerProvider.search([])
+    providers = c.TgComerProvider.read(provider_ids, [])
     for provider in providers:
          print "Loading {} CCH curves".format(provider['name'])
          c.TgComerReader.reader([provider['id']])
