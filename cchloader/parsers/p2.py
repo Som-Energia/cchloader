@@ -2,8 +2,8 @@ from __future__ import absolute_import
 
 from cchloader import logger
 from cchloader.utils import build_dict
-from cchloader.adapters.p2 import P2Adapter
-from cchloader.models.p2 import P2Schema
+from cchloader.adapters.p1 import P1Adapter
+from cchloader.models.p1 import P1Schema
 from cchloader.parsers.parser import Parser, register
 
 
@@ -21,12 +21,11 @@ class P2(Parser):
     delimiter = ';'
 
     def __init__(self, strict=False):
-        self.adapter = P2Adapter(strict=strict)
-        self.schema = P2Schema(strict=strict)
+        self.adapter = P1Adapter(strict=strict)
+        self.schema = P1Schema(strict=strict)
         self.fields = []
         self.headers = []
-        for f in sorted(self.schema.fields,
-                key=lambda f: self.schema.fields[f].metadata['position']):
+        for f in sorted(self.schema.fields, key=lambda f: self.schema.fields[f].metadata['position']):
             field = self.schema.fields[f]
             self.fields.append((f, field.metadata))
             self.headers.append(f)
