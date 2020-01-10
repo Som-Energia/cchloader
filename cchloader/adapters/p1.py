@@ -2,6 +2,7 @@ from cchloader.adapters import CchAdapter
 from cchloader.models.p1 import P1Schema
 from marshmallow import Schema, fields, pre_load
 
+
 class P1BaseAdapter(Schema):
     """ P1 Adapter
     """
@@ -37,6 +38,12 @@ class P1BaseAdapter(Schema):
         source = data.get('validated')
         if not source:
             data['validated'] = 0
+
+    @pre_load
+    def fix_type(self, data):
+        source = data.get('type')
+        if not source:
+            data['type'] = 'p'
 
     @pre_load
     def valid_measure(self, data):
@@ -80,6 +87,7 @@ class P1BaseAdapter(Schema):
         data['res2valid'] = res2valid
 
         return data
+
 
 class P1Adapter(P1BaseAdapter, CchAdapter, P1Schema):
     pass
