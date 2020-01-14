@@ -14,8 +14,8 @@ class F1Schema(Schema):
     r2 = fields.Float(position=7, allow_none=True)
     r3 = fields.Float(position=8, allow_none=True)
     r4 = fields.Float(position=9, allow_none=True)
-    reserve1 = fields.Integer(position=10, allow_none=True)
-    reserve2 = fields.Integer(position=11, allow_none=True)
+    reserve1 = fields.Float(position=10, allow_none=True)
+    reserve2 = fields.Float(position=11, allow_none=True)
     source = fields.Integer(position=12,
                             validate=OneOf([1,2,3,4,5,6,7,8,9,10,11,22]))
     validated = fields.Boolean(position=13)

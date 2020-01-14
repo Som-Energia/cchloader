@@ -29,10 +29,10 @@ class P1Schema(Schema):
     r4 = fields.Float(position=14, allow_none=True)
     r4quality = fields.Integer(position=15, allow_none=True,
                                validate=OneOf(valid_quality))
-    reserve1 = fields.Integer(position=16, allow_none=True)
+    reserve1 = fields.Float(position=16, allow_none=True)
     reserve1quality = fields.Integer(position=17, allow_none=True,
                                      validate=OneOf(valid_quality))
-    reserve2 = fields.Integer(position=18, allow_none=True)
+    reserve2 = fields.Float(position=18, allow_none=True)
     reserve2quality = fields.Integer(position=19, allow_none=True,
                                      validate=OneOf(valid_quality))
     source = fields.Integer(position=20,
