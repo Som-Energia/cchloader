@@ -26,12 +26,12 @@ class P2D(Parser):
     def parse_line(self, line):
         slinia = tuple(unicode(line.decode(self.encoding)).split(self.delimiter))
         slinia = map(lambda s: s.strip(), slinia)
-        parsed = {'p2': {}, 'orig': line}
+        parsed = {'p1': {}, 'orig': line}
         data = build_dict(self.headers, slinia)
         result, errors = self.adapter.load(data)
         if errors:
             logger.error(errors)
-        parsed['p2'] = result
+        parsed['p1'] = result
         return parsed, errors
 
 
