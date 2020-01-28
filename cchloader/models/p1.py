@@ -5,11 +5,11 @@ from marshmallow.validate import OneOf
 
 class P1Schema(Schema):
 
-    valid_quality = range(0,255)
-    valid_activa_quality = range(0,255)
+    valid_quality = range(0, 255)
+    valid_activa_quality = range(0, 255)
 
     name = fields.String(position=0, required=True)
-    measure_type = fields.Integer(position=1) # hauria de ser sempre 11
+    measure_type = fields.Integer(position=1)  # hauria de ser sempre 11
     datetime = fields.DateTime(position=2, format='%Y/%m/%d %H:%M:%S')
     season = fields.Integer(position=3, validate=OneOf([0, 1]))
     ai = fields.Float(position=4)
@@ -37,8 +37,10 @@ class P1Schema(Schema):
                                      validate=OneOf(valid_quality))
     source = fields.Integer(position=20,
                             allow_none=True,
-                            validate=OneOf([1,2,3,4,5,6,7,8,9,10,11,22]),
+                            validate=OneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 22]),
                             )
     validated = fields.Boolean(position=21)
+    type = fields.String(position=22, validate=OneOf(['p', 'p4']))
+
 
 P1Schema()
