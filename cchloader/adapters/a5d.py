@@ -1,9 +1,10 @@
 from cchloader.adapters import CchAdapter
-from cchloader.models.cchfact import CchFactSchema
+from cchloader.models.cch_autocons import CchAutoconsSchema
 from marshmallow import Schema, fields, pre_load
 
-class F5dBaseAdapter(Schema):
-    """ F5D Adapter
+
+class A5dBaseAdapter(Schema):
+    """ A5D Adapter
     """
 
     @pre_load
@@ -32,5 +33,6 @@ class F5dBaseAdapter(Schema):
         else:
             data['source'] = None
 
-class F5dAdapter(F5dBaseAdapter, CchAdapter, CchFactSchema):
+
+class A5dAdapter(A5dBaseAdapter, CchAdapter, CchAutoconsSchema):
     pass

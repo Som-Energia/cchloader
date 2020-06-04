@@ -2,24 +2,23 @@ from __future__ import absolute_import
 
 from cchloader import logger
 from cchloader.utils import build_dict
-from cchloader.adapters.f5d import F5dAdapter
-from cchloader.models.cchfact import CchFactSchema
+from cchloader.adapters.a5d import A5dAdapter
+from cchloader.models.cch_autocons import CchAutoconsSchema
 from cchloader.parsers.parser import Parser, register
 
 
-class F5d(Parser):
+class A5d(Parser):
 
-    patterns = ['^F5D_(\d+)_(\d{4})_(\d{4})(\d{2})(\d{2})']
+    patterns = ['^A5D_(\d+)_(\d{4})_(\d{4})(\d{2})(\d{2})']
     encoding = "iso-8859-15"
     delimiter = ';'
 
     def __init__(self, strict=False):
-        self.adapter =F5dAdapter(strict=strict)
-        self.schema = CchFactSchema(strict=strict)
+        self.adapter = A5dAdapter(strict=strict)
+        self.schema = CchAutoconsSchema(strict=strict)
         self.fields = []
         self.headers = []
-        for f in sorted(self.schema.fields,
-                key=lambda f: self.schema.fields[f].metadata['position']):
+        for f in sorted(self.schema.fields, key=lambda f: self.schema.fields[f].metadata['position']):
             field = self.schema.fields[f]
             self.fields.append((f, field.metadata))
             self.headers.append(f)
@@ -36,4 +35,4 @@ class F5d(Parser):
         return parsed, errors
 
 
-register(F5d)
+register(A5d)

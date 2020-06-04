@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
-from datetime import datetime
 import os
 import re
 
@@ -36,11 +35,13 @@ class Parser(object):
     """
 
     encoding = "iso-8859-15"
+    patterns = []
 
     @classmethod
     def detect(cls, cch_file):
-        if cls.pattern:
-            return re.match(cls.pattern, os.path.basename(cch_file))
+        for pattern in cls.patterns:
+            if re.match(pattern, os.path.basename(cch_file)):
+                return True
         return False
 
     def parse_line(self, line):

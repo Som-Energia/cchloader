@@ -22,7 +22,7 @@ setup(
         "raven",
         "pymongo<3.0",
         "osconf",
-        "marshmallow==2.0.0b2",
+        "marshmallow>=2.13.5",
         "click"
     ],
     test_suite='',
