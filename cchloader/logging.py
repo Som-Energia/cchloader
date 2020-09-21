@@ -14,6 +14,10 @@ from __future__ import absolute_import
 
 import logging
 
+try:
+    import sentry_sdk
+except ImportError:
+    sentry_sdk = None
 from raven import Client as SentryClient
 from raven.handlers.logging import SentryHandler
 from cchloader import VERSION
@@ -44,10 +48,13 @@ def setup_logging(level=None, logfile=None):
         hdlr.setFormatter(formatter)
         logger.addHandler(hdlr)
 
-    sentry = SentryClient()
-    sentry.tags_context({'version': VERSION})
-    sentry_handler = SentryHandler(sentry, level=logging.ERROR)
-    logger.addHandler(sentry_handler)
+    if sentry_sdk:
+        sentry_sdk.init(release=VERSION)
+    else:
+        sentry = SentryClient()
+        sentry.tags_context({'version': VERSION})
+        sentry_handler = SentryHandler(sentry, level=logging.ERROR)
+        logger.addHandler(sentry_handler)
 
     if isinstance(level, basestring):
         level = getattr(logging, level.upper(), None)
