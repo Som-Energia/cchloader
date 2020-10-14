@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 from datetime import datetime
+import bz2
+from StringIO import StringIO
 import os
 
 from cchloader.parsers.parser import get_parser
@@ -79,7 +81,14 @@ class CchFile(object):
         if fd is None:
             self.fd = open(path, 'r')
         else:
-            self.fd = fd
+            try:
+                # bz compressed files ina zip file
+                data = bz2.decompress(fd.read())
+                bzfd = StringIO()
+                bzfd.write(data)
+                self.fd = bzfd
+            except Exception as e:
+                self.fd = fd
 
     def __iter__(self):
         return self

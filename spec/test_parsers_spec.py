@@ -20,6 +20,7 @@ with description('Testing of parsers'):
             'P1_0022_20170507_20170706.6',  # Documented
             'P1_0022_0706_20170507_20170706.6',  # Fenosa
             'P1_0031_20170311.1.ZIP',  # Endesa
+            'P1_0112_20201001_20201014.zip'
         ]
         self.p2_filenames = [
             'P2_0022_20170507_20170706.6',  # Documented
@@ -49,6 +50,15 @@ with description('Testing of parsers'):
             for cch_file in packed:
                 for line in cch_file:
                     expected_p1 = 'ES0031408381283001EW1P;11;2019/06/08 00:00:00;1;20.000;0;0.000;0;3.000;0;0.000;0;0.000;0;0.000;0;0.000;128;0.000;128;1;0\n'
+                    result_p1 = line['orig']
+                    assert result_p1 == expected_p1
+                    break
+                break
+    with it('P1 parser fits file format'):
+        with PackedCchFile('spec/curve_files/P1_0112_20201001_20201014.zip') as packed:
+            for cch_file in packed:
+                for line in cch_file:
+                    expected_p1 = 'ES0112000000022463NE0F;11;2020/10/01 01:00:00;1;413.000;0;0.000;0;218.000;0;0.000;0;0.000;0;0.000;0;;;;;1;1\n'
                     result_p1 = line['orig']
                     assert result_p1 == expected_p1
                     break
