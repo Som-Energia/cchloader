@@ -1,10 +1,12 @@
 from __future__ import absolute_import
 from datetime import datetime
+import bz2
+from StringIO import StringIO
 import os
 
 from cchloader.parsers.parser import get_parser
 from cchloader import logger
-from cchloader.compress import get_compressed_file
+from cchloader.compress import get_compressed_file, is_compressed_data
 
 class PackedCchFile(object):
     """Packed CCH file.
@@ -79,7 +81,19 @@ class CchFile(object):
         if fd is None:
             self.fd = open(path, 'r')
         else:
-            self.fd = fd
+            try:
+                file_content = fd.read()
+                # ZipExtFile has no seek method
+                tmp_fd = StringIO(file_content)
+                if is_compressed_data(tmp_fd):
+                    # bz compressed files ina zip file
+                    data = bz2.decompress(file_content)
+                    bzfd = StringIO(data)
+                    self.fd = bzfd
+                else:
+                    self.fd = tmp_fd
+            except Exception as e:
+                self.fd = fd
 
     def __iter__(self):
         return self
