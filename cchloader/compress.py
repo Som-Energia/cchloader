@@ -119,6 +119,15 @@ class FileTypeNotSupportedException(Exception):
     pass
 
 
+def is_compressed_data(fd):
+    start_of_file = fd.read(5)
+    fd.seek(0)
+    for cls in (ZIPFile, GZFile, BZFile):
+        if cls.is_magic(start_of_file):
+            return True
+
+    return False
+
 def is_compressed_file(filename):
     with file(filename, 'rb') as f:
         start_of_file = f.read(5)
