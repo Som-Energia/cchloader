@@ -13,8 +13,8 @@ class CchAutoconsSchema(Schema):
     r2 = fields.Integer(position=6, allow_none=True)
     r3 = fields.Integer(position=7, allow_none=True)
     r4 = fields.Integer(position=8, allow_none=True)
-    source = fields.Integer(position=9, validate=OneOf([1, 2, 3, 4, 5, 6]))
-    validated = fields.Boolean(position=10)
+    source = fields.Integer(position=9, validate=OneOf([1, 2, 3, 4, 5, 6]), allow_none=True)
+    validated = fields.String(position=10, default='')
     bill = fields.String(position=11)
 
 
