@@ -77,9 +77,7 @@ with description('Testing of parsers'):
             with PackedCchFile('spec/curve_files/' + filename) as packed:
                 for cch_file in packed:
                     for line in cch_file:
-                        #expected_p2 = 'ES1234000000000001JN0F;2021;02;01;12;AE;32;F;D;01;\n'
                         result_p2 = line['orig']
-                        #assert result_p2 == expected_p2
                         pass
 
     with it('test error to get exception'):

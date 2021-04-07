@@ -16,7 +16,7 @@ class EPFPFSchema(Schema):
     cierre = fields.String(position=8, validate=OneOf(['P','D','']))
     tipo_medida = fields.Integer(position=9, validate=OneOf(tipomedida_valid))
     validated = fields.Boolean(position=10)
-    date = fields.Date(position=11)
+    datetime = fields.DateTime(position=11)
     filename = fields.String(position=12)
 
 EPFPFSchema()
