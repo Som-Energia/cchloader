@@ -101,7 +101,7 @@ class CchFile(object):
     def next(self):
         for line in self.fd:
             try:
-                data, errors = self.parser.parse_line(line)
+                data, errors = self.parser.parse_line(line, self.path)
 #                if errors:
 #                    self.stats.errors.append(
 #                        (self.stats.line_number, errors)

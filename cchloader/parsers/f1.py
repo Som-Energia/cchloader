@@ -31,7 +31,7 @@ class F1(Parser):
             self.fields.append((f, field.metadata))
             self.headers.append(f)
 
-    def parse_line(self, line):
+    def parse_line(self, line, filename = None):
         slinia = tuple(unicode(line.decode(self.encoding)).split(self.delimiter))
         slinia = map(lambda s: s.strip(), slinia)
         parsed = {'f1': {}, 'orig': line}

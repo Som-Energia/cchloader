@@ -3,6 +3,7 @@ from cchloader.parsers.parser import *
 from cchloader.parsers.f1 import F1
 from cchloader.parsers.p1 import P1
 from cchloader.parsers.p2 import P2
+from cchloader.parsers.epfpf import EPFPF
 from cchloader.exceptions import ParserNotFoundException
 from cchloader.file import PackedCchFile
 
@@ -26,6 +27,7 @@ with description('Testing of parsers'):
             'P2_0022_0706_20170507_20170706.6',  # Fenosa
             'P2_0031_20170311.1.ZIP',  # Endesa
         ]
+        self.epfpf_filenames = ['EPFPF_HD_GEN_1234_P1_20200201.1.ZIP', 'EPFPF_H2_CLE_0762_P2_20201101.0.ZIP',]
         self.wrong_filename = 'P1_20170507_20170706.6'
 
     with it('test to get F1 parser'):
@@ -66,6 +68,19 @@ with description('Testing of parsers'):
                     assert result_p2 == expected_p2
                     break
                 break
+
+    with it('test to get EPFPF parser'):
+        for filename in self.epfpf_filenames:
+            expect(get_parser(filename)).to(equal(EPFPF))
+    with it('EPFPF parser fits file format'):
+        for filename in self.epfpf_filenames:
+            with PackedCchFile('spec/curve_files/' + filename) as packed:
+                for cch_file in packed:
+                    for line in cch_file:
+                        #expected_p2 = 'ES1234000000000001JN0F;2021;02;01;12;AE;32;F;D;01;\n'
+                        result_p2 = line['orig']
+                        #assert result_p2 == expected_p2
+                        pass
 
     with it('test error to get exception'):
         def test_raise_error():

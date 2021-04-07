@@ -44,7 +44,7 @@ class Parser(object):
                 return True
         return False
 
-    def parse_line(self, line):
+    def parse_line(self, line, filename = None):
         """Parse a line of a CCH file.
 
         :param line: line of the file
