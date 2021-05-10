@@ -26,12 +26,12 @@ class B5d(Parser):
     def parse_line(self, line):
         slinia = tuple(unicode(line.decode(self.encoding)).split(self.delimiter))
         slinia = map(lambda s: s.strip(), slinia)
-        parsed = {'cchfact': {}, 'orig': line}
+        parsed = {'cch_gennetabeta': {}, 'orig': line}
         data = build_dict(self.headers, slinia)
         result, errors = self.adapter.load(data)
         if errors:
             logger.error(errors)
-        parsed['cchfact'] = result
+        parsed['cch_gennetabeta'] = result
         return parsed, errors
 
 
