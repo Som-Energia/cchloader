@@ -5,8 +5,9 @@ from cchloader.parsers.p1 import P1
 from cchloader.parsers.p2 import P2
 from cchloader.parsers.a5d import A5d
 from cchloader.parsers.b5d import B5d
+from cchloader.parsers.rf5d import Rf5d
 from cchloader.exceptions import ParserNotFoundException
-from cchloader.file import PackedCchFile
+from cchloader.file import PackedCchFile, CchFile
 
 
 with description('Testing of parsers'):
@@ -35,6 +36,9 @@ with description('Testing of parsers'):
         self.b5d_filenames = [
             'B5D_4321_1234_20170507.0',  # Documented
             'B5D_0189_0373_20210219.0.bz2',  # GISCE
+        ]
+        self.rf5d_filenames = [
+            'RF5D_4321_1234_20170507.0',  # Documented
         ]
         self.wrong_filename = 'P1_20170507_20170706.6'
 
@@ -101,6 +105,18 @@ with description('Testing of parsers'):
                     result_b5d = line['orig']
                     assert result_b5d == expected_b5d
                     break
+                break
+
+    with it('test to get RF5D parser'):
+        for filename in self.rf5d_filenames:
+            expect(get_parser(filename)).to(equal(Rf5d))
+    with it('RF5D parser fits file format'):
+        import pdb; pdb.set_trace()
+        with CchFile('spec/curve_files/RF5D_4321_1234_20170507.0') as cch_file:
+            for line in cch_file:
+                expected_rf5d = 'ES0189000048220011CR0F;2021/01/01 01:00;0;0;0;;;;;;;RE2110197654;\n'
+                result_rf5d = line['orig']
+                assert result_rf5d == expected_rf5d
                 break
 
     with it('test error to get exception'):
