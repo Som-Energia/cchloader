@@ -38,7 +38,7 @@ with description('Testing of parsers'):
             'B5D_0189_0373_20210219.0.bz2',  # GISCE
         ]
         self.rf5d_filenames = [
-            'RF5D_4321_1234_20170507.0',  # Documented
+            'RF5D_0237_0762_20211008.0',  # Documented
         ]
         self.wrong_filename = 'P1_20170507_20170706.6'
 
@@ -111,10 +111,9 @@ with description('Testing of parsers'):
         for filename in self.rf5d_filenames:
             expect(get_parser(filename)).to(equal(Rf5d))
     with it('RF5D parser fits file format'):
-        import pdb; pdb.set_trace()
-        with CchFile('spec/curve_files/RF5D_4321_1234_20170507.0') as cch_file:
+        with CchFile('spec/curve_files/RF5D_0237_0762_20211008.0') as cch_file:
             for line in cch_file:
-                expected_rf5d = 'ES0189000048220011CR0F;2021/01/01 01:00;0;0;0;;;;;;;RE2110197654;\n'
+                expected_rf5d = 'ES0237000000130940CT0F;2021/06/01 01:00;1;189;;;;;;1;0;TA/202100018520;\r\n'
                 result_rf5d = line['orig']
                 assert result_rf5d == expected_rf5d
                 break
