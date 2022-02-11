@@ -8,3 +8,4 @@ from b5d import B5d
 from p2 import P2
 from p2d import P2D
 from rf5d import Rf5d
+from mhcil import Mhcil
