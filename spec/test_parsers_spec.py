@@ -6,6 +6,7 @@ from cchloader.parsers.p2 import P2
 from cchloader.parsers.a5d import A5d
 from cchloader.parsers.b5d import B5d
 from cchloader.parsers.rf5d import Rf5d
+from cchloader.parsers.mhcil import Mhcil
 from cchloader.exceptions import ParserNotFoundException
 from cchloader.file import PackedCchFile, CchFile
 
@@ -39,6 +40,9 @@ with description('Testing of parsers'):
         ]
         self.rf5d_filenames = [
             'RF5D_0237_0762_20211008.0',  # Documented
+        ]
+        self.mhcil_filenames = [
+            'MHCIL_H2_4444_A1_20211201.0'  # Documented
         ]
         self.wrong_filename = 'P1_20170507_20170706.6'
 
@@ -116,6 +120,17 @@ with description('Testing of parsers'):
                 expected_rf5d = 'ES0237000000130940CT0F;2021/06/01 01:00;1;189;;;;;;1;0;TA/202100018520;\r\n'
                 result_rf5d = line['orig']
                 assert result_rf5d == expected_rf5d
+                break
+
+    with it('test to get MHCIL parser'):
+        for filename in self.mhcil_filenames:
+            expect(get_parser(filename)).to(equal(Mhcil))
+    with it('MHCIL parser fits file format'):
+        with CchFile('spec/curve_files/MHCIL_H2_4444_A1_20211201.0') as cch_file:
+            for line in cch_file:
+                expected_mhcil = 'ES0044444444444444441F001;2022;01;01;00;0;0;0;0;R;\n'
+                result_mhcil = line['orig']
+                assert result_mhcil == expected_mhcil
                 break
 
     with it('test error to get exception'):
