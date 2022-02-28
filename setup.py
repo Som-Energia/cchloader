@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='cchloader',
-    version='0.4.1',
+    version='0.4.2',
     packages=find_packages(),
     url='https://github.com/Som-Energia/cchloader',
     license='GPLv3',
