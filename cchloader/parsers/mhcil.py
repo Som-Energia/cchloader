@@ -9,8 +9,8 @@ from cchloader.parsers.parser import Parser, register
 
 class Mhcil(Parser):
 
-    patterns = ['^MHCIL_([H][23CD])_(\d{4})_([PA][12])_(\d{4})(\d{2})(\d{2}).(\d)',
-                '^MHCIL_([H][23CD])_(\d{4})_([PA][12])_(\d{4})(\d{2})(\d{2})']
+    patterns = ['^MHCIL_([H][23CP])_(\d{4})_([PA][12])_(\d{4})(\d{2})(\d{2}).(\d)',
+                '^MHCIL_([H][23CP])_(\d{4})_([PA][12])_(\d{4})(\d{2})(\d{2})']
     encoding = "iso-8859-15"
     delimiter = ';'
 
