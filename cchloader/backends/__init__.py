@@ -54,3 +54,5 @@ def get_backend(url):
 
 # Import Backends
 from cchloader.backends.mongodb import MongoDBBackend
+from cchloader.backends.timescaledb import TimescaleDBBackend
+
