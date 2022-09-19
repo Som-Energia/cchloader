@@ -68,10 +68,7 @@ class TimescaleDBBackend(BaseBackend):
         return oid
 
     def get(self, collection, filters, fields=None):
-        """
-        work in progress
-        """
-        return ''
+        raise Exception("Not implemented cchloader.backend.timescale.get()")
 
     def disconnect(self):
         self.db = None
