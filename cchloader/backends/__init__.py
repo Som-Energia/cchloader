@@ -33,9 +33,13 @@ def urlparse(url):
         'username': url.username,
         'password': url.password,
         'hostname': url.hostname,
-        'port': url.port,
+
         'db': url.path.lstrip('/')
     }
+    try:
+        config['port'] = url.port
+    except:
+        pass
     return config
 
 

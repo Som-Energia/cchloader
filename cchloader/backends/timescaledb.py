@@ -48,6 +48,8 @@ class TimescaleDBBackend(BaseBackend):
         document.update({
             'create_at': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             'update_at': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'create_date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'create_uid': 1,
             'utc_timestamp': get_as_utc_timestamp(document['datetime']).strftime('%Y-%m-%d %H:%M:%S')
         })
         if 'validated' in document and type(document['validated']) == bool:
