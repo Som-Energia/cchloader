@@ -6,6 +6,7 @@ import click
 import os
 from erppeek import Client
 from urlparse import urlparse
+from datetime import datetime
 
 @click.command()
 @click.option('-s', '--server', default='http://localhost',
@@ -42,9 +43,13 @@ def get_cch(c):
     provider_ids = c.TgComerProvider.search([])
     providers = c.TgComerProvider.read(provider_ids, [])
     for provider in providers:
-         print "Loading {} CCH curves".format(provider['name'])
-         c.TgComerReader.reader([provider['id']])
+        try:
+            print "{} Loading {} CCH curves".format(str(datetime.now()), provider['name'])
+            c.TgComerReader.reader([provider['id']])
+        except Exception as e:
+            msg = "{} Error loading {} CCH curves, reason: {}"
 
 if __name__ == "__main__":
-   config_connection(auto_envvar_prefix='PEEK')
+    print "Inici script"
+    config_connection(auto_envvar_prefix='PEEK')
 
