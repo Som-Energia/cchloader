@@ -33,7 +33,6 @@ def urlparse(url):
         'username': url.username,
         'password': url.password,
         'hostname': url.hostname,
-
         'db': url.path.lstrip('/')
     }
     try:
