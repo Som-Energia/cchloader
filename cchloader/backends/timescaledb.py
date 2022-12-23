@@ -2,7 +2,6 @@ from cchloader.backends import BaseBackend, register, urlparse
 from cchloader.compress import is_compressed_file
 import datetime
 import psycopg2
-from psycopg2.errors import UniqueViolation
 import pytz
 
 def get_as_utc_timestamp(t):
