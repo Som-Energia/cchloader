@@ -63,9 +63,25 @@ class TimescaleDBBackend(BaseBackend):
 
         placeholders = ', '.join(['%s'] * len(document))
         columns = ', '.join(document.keys())
-        sql = "INSERT INTO %s ( %s ) VALUES ( %s ) RETURNING *" % (collection, columns, placeholders)
-        self.cr.execute(sql, document.values())
+        #Check if exist
+        sql = "SELECT id FROM %s WHERE utc_timestamp = '%s' and name = '%s'" % (collection, document['utc_timestamp'],document['name'])
+        self.cr.execute(sql)
         oid = self.cr.fetchone()[0]
+
+        if oid:
+            new_values = document.copy()
+            remove_keys = ['utc_timestamp','name','create_at','create_date','create_uid']
+            [new_values.pop(key) for key in remove_keys]
+            sql = "UPDATE %s SET " % (collection)
+            for k,v in new_values.iteritems():
+                sql += "%s = '%s', " % (k,v)
+            sql = sql[:-1] + "WHERE id = %s" % oid
+            self.cr.execute(sql)
+        else:
+            sql = "INSERT INTO %s ( %s ) VALUES ( %s ) RETURNING *" % (collection, columns,placeholders)
+            self.cr.execute(sql, document.values())
+            oid = self.cr.fetchone()[0]
+
         self.db.commit()
         return oid
 
