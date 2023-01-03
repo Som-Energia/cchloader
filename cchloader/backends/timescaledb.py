@@ -14,7 +14,7 @@ class TimescaleDBBackend(BaseBackend):
     """TimescaleDB Backend
     """
     collection_prefix = 'tg_'
-    collections = ['f1']
+    collections = ['f1','p1']
 
     def __init__(self, uri=None):
         if uri is None:
@@ -57,7 +57,7 @@ class TimescaleDBBackend(BaseBackend):
 
         if 'datetime' in document and type(document['datetime']) == datetime.datetime:
             document['datetime'] = document['datetime'].strftime('%Y-%m-%d %H:%M:%S')
-        
+
         if 'name' in document and type(document['name']) == type(u''):
             document['name'] = document['name'].encode('utf-8')
 
