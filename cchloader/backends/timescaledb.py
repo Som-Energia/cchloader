@@ -66,7 +66,8 @@ class TimescaleDBBackend(BaseBackend):
         #Check if exist
         sql = "SELECT id FROM %s WHERE utc_timestamp = '%s' and name = '%s'" % (collection, document['utc_timestamp'],document['name'])
         self.cr.execute(sql)
-        oid = self.cr.fetchone()[0]
+        res = self.cr.fetchone()
+        oid = res[0] if res else False
 
         if oid:
             new_values = document.copy()
