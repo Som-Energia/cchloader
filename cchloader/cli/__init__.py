@@ -16,6 +16,7 @@ def cchloader():
 def import_file(file, backend):
     url = backend
     backend = get_backend(backend)
+    lines = []
     with backend(url) as bnd:
         if is_compressed_file(file):
             click.echo("Using packed CCH File for {}".format(file))
@@ -25,13 +26,14 @@ def import_file(file, backend):
                     for line in cch_file:
                         if not line:
                             continue
-                        bnd.insert(line)
+                        lines.append(line)
         else:
             with CchFile(file) as cch_file:
                 for line in cch_file:
                     if not line:
                         continue
-                    bnd.insert(line)
+                    lines.append(line)
+        bnd.insert_batch(lines)
 
 
 if __name__ == "__main__":
