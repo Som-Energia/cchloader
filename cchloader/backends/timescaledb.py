@@ -18,7 +18,7 @@ class TimescaleDBBackend(BaseBackend):
     """
     batch_size = 500
     collection_prefix = 'tg_'
-    collections = ['f1', 'p1']
+    collections = ['f1', 'p1', 'cchfact', 'cchval']
 
     def __init__(self, uri=None):
         if uri is None:
@@ -38,7 +38,6 @@ class TimescaleDBBackend(BaseBackend):
 
     def insert(self, document):
         self.insert_batch([document])
-        # TODO: return oid
 
     def insert_batch(self, documents):
         batches_to_insert = defaultdict(list)
