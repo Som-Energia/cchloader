@@ -1,20 +1,24 @@
 from cchloader.backends import BaseBackend, register, urlparse
 from cchloader.compress import is_compressed_file
+from collections import defaultdict, OrderedDict
 import datetime
 import psycopg2
+import psycopg2.extras
 import pytz
 
-def get_as_utc_timestamp(t):
+def get_as_utc_timestamp(t, season=None):
     timezone_utc = pytz.timezone("UTC")
     timezone_local = pytz.timezone("Europe/Madrid")
-    return timezone_utc.normalize(timezone_local.localize(t, is_dst=False))
+    is_dst = season==1
+    return timezone_utc.normalize(timezone_local.localize(t, is_dst=is_dst))
 
 
 class TimescaleDBBackend(BaseBackend):
     """TimescaleDB Backend
     """
+    batch_size = 500
     collection_prefix = 'tg_'
-    collections = ['f1','p1']
+    collections = ['f1', 'p1', 'cchfact', 'cchval']
 
     def __init__(self, uri=None):
         if uri is None:
@@ -33,58 +37,65 @@ class TimescaleDBBackend(BaseBackend):
 
 
     def insert(self, document):
-        for collection in document.keys():
-            if collection in self.collections:
-                cch = document.get(collection)
-                if cch:
+        self.insert_batch([document])
+
+    def insert_batch(self, documents):
+        batches_to_insert = defaultdict(list)
+        for document in documents:
+            for collection in self.collections:
+                if collection in document:
+                    cch = document.get(collection)
                     cch.backend = self
-                    cch.collection = self.collection_prefix + collection
-                    self.insert_cch(cch)
+                    batches_to_insert[self.collection_prefix + collection].append(cch.backend_data)
 
+        for collection, curves in batches_to_insert.items():
+            self.insert_cch_batch(collection, curves)
 
-    def insert_cch(self, cch):
-        collection = cch.collection
-        document = cch.backend_data
-        document.update({
-            'create_at': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'update_at': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'create_date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'create_uid': 1,
-            'utc_timestamp': get_as_utc_timestamp(document['datetime']).strftime('%Y-%m-%d %H:%M:%S')
-        })
-        if 'validated' in document and type(document['validated']) == bool:
-            document['validated'] = 1 if document['validated'] else 0
+    def insert_cch_batch(self, collection, curves):
+        batch = []
+        for curve in curves:
+            curve.update({
+                'create_at': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'update_at': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'create_date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'create_uid': 1,
+                'utc_timestamp': get_as_utc_timestamp(curve['datetime'], curve.get('season')).strftime('%Y-%m-%d %H:%M:%S')
+            })
 
-        if 'datetime' in document and type(document['datetime']) == datetime.datetime:
-            document['datetime'] = document['datetime'].strftime('%Y-%m-%d %H:%M:%S')
+            if collection != "tg_cchval":
+                if 'validated' not in curve:
+                    curve['validated'] = 0
+                curve['validated'] = int(curve['validated'])
 
-        if 'name' in document and type(document['name']) == type(u''):
-            document['name'] = document['name'].encode('utf-8')
+            if 'datetime' in curve and type(curve['datetime']) == datetime.datetime:
+                curve['datetime'] = curve['datetime'].strftime('%Y-%m-%d %H:%M:%S')
 
-        placeholders = ', '.join(['%s'] * len(document))
-        columns = ', '.join(document.keys())
-        #Check if exist
-        sql = "SELECT id FROM %s WHERE utc_timestamp = '%s' and name = '%s'" % (collection, document['utc_timestamp'],document['name'])
-        self.cr.execute(sql)
-        res = self.cr.fetchone()
-        oid = res[0] if res else False
+            if 'name' in curve and type(curve['name']) == type(u''):
+                curve['name'] = curve['name'].encode('utf-8')
 
-        if oid:
-            new_values = document.copy()
-            remove_keys = ['utc_timestamp','name','create_at','create_date','create_uid']
-            [new_values.pop(key) for key in remove_keys]
-            sql = "UPDATE %s SET " % (collection)
-            for k,v in new_values.iteritems():
-                sql += "%s = '%s', " % (k,v)
-            sql = sql[:-1] + "WHERE id = %s" % oid
-            self.cr.execute(sql)
-        else:
-            sql = "INSERT INTO %s ( %s ) VALUES ( %s ) RETURNING *" % (collection, columns,placeholders)
-            self.cr.execute(sql, document.values())
-            oid = self.cr.fetchone()[0]
+            # uses ordered dict to insert always in the same order
+            batch.append(OrderedDict(sorted(curve.items())))
+            if len(batch) >= self.batch_size:
+                self.insert_cch_batch_chunk(collection, batch)
+                batch = []
+        if batch:
+            self.insert_cch_batch_chunk(collection, batch)
 
+    def insert_cch_batch_chunk(self, collection, batch):
+        # in the same batch we can't have repeated items as postgresql on conflict will fail
+        unique_batch = {item['name']+item['utc_timestamp']: item for item in batch}.values()
+
+        field_names = unique_batch[0].keys()
+        data = [vals.values() for vals in unique_batch]
+
+        sql = "INSERT INTO {} ({}) VALUES %s ON CONFLICT (name, utc_timestamp) DO UPDATE SET {};".format(
+            collection,
+            ','.join(field_names),
+            ', '.join(['{}=EXCLUDED.{}'.format(field, field) for field in field_names])
+        )
+
+        psycopg2.extras.execute_values(self.cr, sql, data, template=None, page_size=9999)
         self.db.commit()
-        return oid
 
     def get(self, collection, filters, fields=None):
         raise Exception("Not implemented cchloader.backend.timescale.get()")

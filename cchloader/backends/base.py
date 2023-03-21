@@ -18,6 +18,10 @@ class BaseBackend(object):
     def insert(self, document):
         raise NotImplementedError()
 
+    def insert_batch(self, documents):
+        for document in documents:
+            self.insert(document)
+
     def get(self, collection, filters, fields=None):
         raise NotImplementedError()
 
