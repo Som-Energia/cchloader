@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+import traceback
 
 
 class BaseBackend(object):
@@ -19,8 +20,15 @@ class BaseBackend(object):
         raise NotImplementedError()
 
     def insert_batch(self, documents):
+        """ This method returns the errors in a list of strings with it's trace
+        """
+        errors = []
         for document in documents:
-            self.insert(document)
+            try:
+                self.insert(document)
+            except Exception as _:
+                errors.append(traceback.format_exc())
+        return errors
 
     def get(self, collection, filters, fields=None):
         raise NotImplementedError()
