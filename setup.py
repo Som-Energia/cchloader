@@ -1,5 +1,6 @@
 from setuptools import setup, find_packages
 
+readme = open("README.md").read()
 
 setup(
     name='cchloader',
@@ -9,7 +10,9 @@ setup(
     license='GPLv3',
     author='',
     author_email='',
-    description='''Implementation based on sippers from GISCE 
+    long_description=readme,
+    long_description_content_type='text/markdown',
+    description='''Implementation based on sippers from GISCE
     https://github.com/gisce/sippers''',
     entry_points='''
         [console_scripts]
