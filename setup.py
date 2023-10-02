@@ -28,5 +28,5 @@ setup(
         "marshmallow>=2.13.5",
         "click"
     ],
-    test_suite='',
+    test_suite='tests',
 )
