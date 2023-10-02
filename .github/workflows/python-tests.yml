@@ -44,4 +44,4 @@ jobs:
           SRID: ${{ secrets.SRID }}
         run: |
           cd ${{github.workspace}}
-          python -m unittest tests/__init__.py
+          python -m unittest tests
