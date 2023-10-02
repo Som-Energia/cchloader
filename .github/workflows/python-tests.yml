@@ -37,6 +37,7 @@ jobs:
         run: |
           cd ${{github.workspace}}
           pip install -e .
+          pip install coverage
       - name: Run Tests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -44,4 +45,10 @@ jobs:
           SRID: ${{ secrets.SRID }}
         run: |
           cd ${{github.workspace}}
-          python -m unittest tests
+          coverage run -m unittest tests
+          coverage xml -i
+      - name: Publish Unit Test Results
+        if: (success() || failure()) && matrix.python-version == '2.7' && github.event_name == 'pull_request'
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        with:
+          files: ${{github.workspace}}/*.xml
