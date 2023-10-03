@@ -37,18 +37,13 @@ jobs:
         run: |
           cd ${{github.workspace}}
           pip install -e .
-          pip install coverage
+          pip install unittest-xml-reporting
       - name: Run Tests
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ESIOS_TOKEN: ${{ secrets.ESIOS_TOKEN }}
-          SRID: ${{ secrets.SRID }}
         run: |
           cd ${{github.workspace}}
-          coverage run -m unittest tests
-          coverage xml -i
+          python -m xmlrunner tests -o test-reports
       - name: Publish Unit Test Results
         if: (success() || failure()) && matrix.python-version == '2.7' && github.event_name == 'pull_request'
         uses: EnricoMi/publish-unit-test-result-action@v1
         with:
-          files: ${{github.workspace}}/*.xml
+          files: ${{github.workspace}}/test-reports/*.xml
