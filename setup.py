@@ -26,7 +26,9 @@ setup(
         "pymongo<3.0",
         "osconf",
         "marshmallow>=2.13.5",
-        "click"
+        "click",
+        "pytz",
+        "psycopg2-binary"
     ],
-    test_suite='',
+    test_suite='tests',
 )
