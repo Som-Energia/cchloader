@@ -9,7 +9,7 @@ import pytz
 def get_as_utc_timestamp(t, cups, season=None):
     timezone_utc = pytz.timezone("UTC")
     timezone_local = pytz.timezone("Europe/Madrid")
-    if cups[0:7] == 'ES00316':
+    if cups[0:7] == 'ES00316' or cups[0:7] == 'ES04016':
         timezone_local = pytz.timezone("Atlantic/Canary")
     is_dst = season==1
     return timezone_utc.normalize(timezone_local.localize(t, is_dst=is_dst))
