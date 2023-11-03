@@ -4,7 +4,7 @@ readme = open("README.md").read()
 
 setup(
     name='cchloader',
-    version='0.4.4',
+    version='0.4.5',
     packages=find_packages(),
     url='https://github.com/Som-Energia/cchloader',
     license='GPLv3',
