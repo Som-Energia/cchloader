@@ -87,11 +87,19 @@ class TimescaleDBBackend(BaseBackend):
 
         field_names = unique_batch[0].keys()
         data = [vals.values() for vals in unique_batch]
+        fields_to_update = []
+        for field in field_names:
+            if field in ['name', 'utc_timestamp', 'create_date', 'create_uid']:
+                continue
+            else:
+                fields_to_update.append('{}=EXCLUDED.{}'.format(field, field))
+        fields_to_update.append('write_date=EXCLUDED.create_date')
+        fields_to_update.append('write_uid=EXCLUDED.create_uid')
 
         sql = "INSERT INTO {} ({}) VALUES %s ON CONFLICT (name, utc_timestamp) DO UPDATE SET {};".format(
             collection,
             ','.join(field_names),
-            ', '.join(['{}=EXCLUDED.{}'.format(field, field) for field in field_names])
+            ', '.join(fields_to_update)
         )
 
         psycopg2.extras.execute_values(self.cr, sql, data, template=None, page_size=9999)
