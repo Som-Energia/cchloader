@@ -7,10 +7,4 @@ Python package to create electricity curve (CCH) models from "Distribuidoras" fi
 
 ## CHANGES
 
-### 0.4.4 2023-10-25
-
-- Fix **utc_timestamp** for Canary Islands curves (-1 from peninsula)
-
-### 0.4.3 2023-09-25
-
-- Add backend for PostgreSQL Timescale database
+You can view it in [Releases](https://github.com/Som-Energia/cchloader/releases)
