@@ -9,8 +9,7 @@ try:
 except Exception as e:
     VERSION = 'unknown'
 
-from .monkeypatch_libs import Pymongo
-Pymongo.monkeypatch()
+from . import monkeypatch_loader
 
 from .logging import setup_logging
 
