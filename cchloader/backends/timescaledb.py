@@ -96,9 +96,13 @@ class TimescaleDBBackend(BaseBackend):
         fields_to_update.append('write_date=EXCLUDED.create_date')
         fields_to_update.append('write_uid=EXCLUDED.create_uid')
 
-        sql = "INSERT INTO {} ({}) VALUES %s ON CONFLICT (name, utc_timestamp) DO UPDATE SET {};".format(
+        on_conflict = 'name, utc_timestamp'
+        if collection == 'tg_p1':
+            on_conflict = 'name, utc_timestamp, type'
+        sql = "INSERT INTO {} ({}) VALUES %s ON CONFLICT ({}) DO UPDATE SET {};".format(
             collection,
             ','.join(field_names),
+            on_conflict,
             ', '.join(fields_to_update)
         )
 
