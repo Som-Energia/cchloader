@@ -20,7 +20,7 @@ setup(
     },
     install_requires=[
         "raven",
-        "pymongo<3.0",
+        "pymongo<=3.13.0",
         "osconf",
         "marshmallow>=2.13.5",
         "click"
