@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
 # -*- encoding: utf-8 -*-
+from __future__ import absolute_import
+
 from marshmallow import Schema, fields
 from marshmallow.validate import OneOf
 

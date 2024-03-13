@@ -1,6 +1,10 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from cchloader.adapters import CchAdapter
 from cchloader.models.cchfact import CchFactSchema
 from marshmallow import Schema, fields, pre_load
+
 
 class F5dBaseAdapter(Schema):
     """ F5D Adapter

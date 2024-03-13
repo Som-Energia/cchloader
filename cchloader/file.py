@@ -1,12 +1,12 @@
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import
-from datetime import datetime
 import bz2
 from StringIO import StringIO
-import os
 
 from cchloader.parsers.parser import get_parser
 from cchloader import logger
 from cchloader.compress import get_compressed_file, is_compressed_data
+
 
 class PackedCchFile(object):
     """Packed CCH file.

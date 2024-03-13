@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from cchloader.adapters import CchAdapter
 from cchloader.models.mhcil import MhcilSchema
 from marshmallow import Schema, fields, pre_load

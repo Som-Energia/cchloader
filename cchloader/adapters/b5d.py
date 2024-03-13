@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from cchloader.adapters import CchAdapter
 from cchloader.models.cch_gennetabeta import CchGenNetaBetaSchema
 from marshmallow import Schema, fields, pre_load
