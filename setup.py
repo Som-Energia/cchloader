@@ -1,11 +1,16 @@
+# -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
+with open('requirements.txt', 'r') as f:
+    requirements = f.readlines()
+
+PACKAGES_DATA = {'cchloader': ['data/*']}
 
 setup(
     name='cchloader',
     version='0.4.2',
     packages=find_packages(),
-    url='https://github.com/Som-Energia/cchloader',
+    url='https://github.com/gisce/cchloader',
     license='GPLv3',
     author='',
     author_email='',
@@ -15,15 +20,7 @@ setup(
         [console_scripts]
         usmartdata=usmartdata.cli:usmartdata
     ''',
-    package_data={
-        'cchloader': ['data/*']
-    },
-    install_requires=[
-        "raven",
-        "pymongo<=3.13.0",
-        "osconf",
-        "marshmallow>=2.13.5",
-        "click"
-    ],
+    package_data=PACKAGES_DATA,
+    install_requires=requirements,
     test_suite='',
 )
