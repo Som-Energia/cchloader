@@ -17,7 +17,7 @@ class MedidasSchema(Schema):
     r2 = fields.Integer(position=7, allow_none=True)
     r3 = fields.Integer(position=8, allow_none=True)
     factor_potencia = fields.Float(position=8, allow_none=True)
-    tipo_factor_potencia = fields.Integer(position=9, validate=OneOf([0, 1]))
+    tipo_factor_potencia = fields.Integer(position=9, allow_none=True)
     tipo_lectura = fields.String(position=9, validate=OneOf(['R', 'E']))
 
 
