@@ -1,13 +1,13 @@
-# -*- coding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 from __future__ import absolute_import
 
 from cchloader.adapters import CchAdapter
-from cchloader.models.cchfact import CchFactSchema
+from cchloader.models.corbagen import CorbaGenSchema
 from marshmallow import Schema, fields, pre_load
 
 
-class F5dBaseAdapter(Schema):
-    """ F5D Adapter
+class CorbaGenBaseAdapter(Schema):
+    """ CORBAGEN Adapter
     """
 
     @pre_load
@@ -27,14 +27,6 @@ class F5dBaseAdapter(Schema):
         else:
             data['season'] = None
 
-    @pre_load
-    def fix_source(self, data):
-        valid_values = [1, 2, 3, 4, 5, 6]
-        source = data.get('source')
-        if source and source.isdigit() and int(source) in valid_values:
-            data['source'] = int(source)
-        else:
-            data['source'] = None
 
-class F5dAdapter(F5dBaseAdapter, CchAdapter, CchFactSchema):
+class CorbaGenAdapter(CorbaGenBaseAdapter, CchAdapter, CorbaGenSchema):
     pass

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
 from urlparse import urlparse as std_urlparse
@@ -54,3 +55,4 @@ def get_backend(url):
 
 # Import Backends
 from cchloader.backends.mongodb import MongoDBBackend
+from cchloader.backends.timescaledb import TimescaleDBBackend

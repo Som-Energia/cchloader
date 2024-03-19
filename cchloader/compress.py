@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 
 import struct
 import zipfile
 import gzip
 import bz2
+
 
 class CompressedFile (object):
     magic = None

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Pymongo:
     @staticmethod
     def monkeypatch():

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from mamba import description, before, it
 from expects import expect, equal, raise_error
 from cchloader.parsers.parser import *
 from cchloader.parsers.f1 import F1
@@ -7,6 +9,7 @@ from cchloader.parsers.a5d import A5d
 from cchloader.parsers.b5d import B5d
 from cchloader.parsers.rf5d import Rf5d
 from cchloader.parsers.mhcil import Mhcil
+from cchloader.parsers.corbagen import CorbaGen
 from cchloader.exceptions import ParserNotFoundException
 from cchloader.file import PackedCchFile, CchFile
 
@@ -43,6 +46,9 @@ with description('Testing of parsers'):
         ]
         self.mhcil_filenames = [
             'MHCIL_H2_4444_A1_20211201.0'  # Documented
+        ]
+        self.corbagen_filenames = [
+            'CORBAGEN_202403.0'  # Documented
         ]
         self.wrong_filename = 'P1_20170507_20170706.6'
 
@@ -131,6 +137,17 @@ with description('Testing of parsers'):
                 expected_mhcil = 'ES0044444444444444441F001;2022;01;01;00;0;0;0;0;R;\n'
                 result_mhcil = line['orig']
                 assert result_mhcil == expected_mhcil
+                break
+
+    with it('test to get CORBAGEN parser'):
+        for filename in self.corbagen_filenames:
+            expect(get_parser(filename)).to(equal(CorbaGen))
+    with it('CORBAGEN parser fits file format'):
+        with CchFile('spec/curve_files/CORBAGEN_202403.0') as cch_file:
+            for line in cch_file:
+                expected_corbagen = 'ES1234000000000001JN0F001;2024-03-01 01:00;0;0;0;0;\n'
+                result_corbagen = line['orig']
+                assert result_corbagen == expected_corbagen
                 break
 
     with it('test error to get exception'):

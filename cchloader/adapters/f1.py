@@ -1,6 +1,10 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from cchloader.adapters import CchAdapter
 from cchloader.models.f1 import F1Schema
 from marshmallow import Schema, fields, pre_load
+
 
 class F1BaseAdapter(Schema):
     """ F1 Adapter
