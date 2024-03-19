@@ -31,6 +31,17 @@ class MedidasBaseAdapter(Schema):
         data['r3'] = data.get('r3', 0)
 
     @pre_load
+    def fix_factor_potencia(self, data):
+        factor_potencia = data.get('factor_potencia', 0.0)
+        if ',' in factor_potencia:
+            factor_potencia = factor_potencia.replace(',', '.')
+        data['factor_potencia'] = factor_potencia
+
+    @pre_load
+    def fix_tipo_factor_potencia(self, data):
+        data['tipo_factor_potencia'] = data.get('tipo_factor_potencia', 0)
+
+    @pre_load
     def fix_season(self, data):
         valid_values = [0, 1]
         season = data.get('season')
