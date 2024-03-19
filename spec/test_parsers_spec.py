@@ -47,7 +47,7 @@ with description('Testing of parsers'):
         ]
         self.mhcil_filenames = [
             'MHCIL_H2_4444_A1_20211201.0'  # Documented
-        ],
+        ]
         self.medidas_filenames = [
             'medidas_1234_202402_2_20240301.zip',  # Documented
             'medidas_1234_5678_202402_2_20240301.zip'  # Documented
