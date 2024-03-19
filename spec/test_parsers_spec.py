@@ -9,6 +9,7 @@ from cchloader.parsers.a5d import A5d
 from cchloader.parsers.b5d import B5d
 from cchloader.parsers.rf5d import Rf5d
 from cchloader.parsers.mhcil import Mhcil
+from cchloader.parsers.medidas import Medidas
 from cchloader.parsers.corbagen import CorbaGen
 from cchloader.exceptions import ParserNotFoundException
 from cchloader.file import PackedCchFile, CchFile
@@ -46,6 +47,10 @@ with description('Testing of parsers'):
         ]
         self.mhcil_filenames = [
             'MHCIL_H2_4444_A1_20211201.0'  # Documented
+        ],
+        self.medidas_filenames = [
+            'medidas_1234_202402_2_20240301.zip',  # Documented
+            'medidas_1234_5678_202402_2_20240301.zip'  # Documented
         ]
         self.corbagen_filenames = [
             'CORBAGEN_202403.0'  # Documented
@@ -138,6 +143,25 @@ with description('Testing of parsers'):
                 result_mhcil = line['orig']
                 assert result_mhcil == expected_mhcil
                 break
+
+    with it('test to get MEDIDAS parser'):
+        for filename in self.medidas_filenames:
+            expect(get_parser(filename)).to(equal(Medidas))
+    with it('MEDIDAS parser fits file format'):
+        with PackedCchFile('spec/curve_files/medidas_1234_202402_2_20240301.zip') as packed:
+            for cch_file in packed:
+                for line in cch_file:
+                    expected_medidas = 'ES1234000000001234561F001;2024/02/01 01:00:00;0;-24;0;0;;;R;\n'
+                    result_medidas = line['orig']
+                    assert result_medidas == expected_medidas
+                    break
+        with PackedCchFile('spec/curve_files/medidas_1234_5678_202402_2_20240301.zip') as packed:
+            for cch_file in packed:
+                for line in cch_file:
+                    expected_medidas = 'ES1234000000001234561F001;2024/02/01 01:00:00;0;-24;0;0;;;R;\n'
+                    result_medidas = line['orig']
+                    assert result_medidas == expected_medidas
+                    break
 
     with it('test to get CORBAGEN parser'):
         for filename in self.corbagen_filenames:
