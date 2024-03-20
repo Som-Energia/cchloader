@@ -8,7 +8,7 @@ PACKAGES_DATA = {'cchloader': ['data/*']}
 
 setup(
     name='cchloader',
-    version='0.4.3',
+    version='0.4.4',
     packages=find_packages(),
     url='https://github.com/gisce/cchloader',
     license='GPLv3',
