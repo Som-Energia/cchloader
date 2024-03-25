@@ -11,6 +11,7 @@ from cchloader.parsers.rf5d import Rf5d
 from cchloader.parsers.mhcil import Mhcil
 from cchloader.parsers.medidas import Medidas
 from cchloader.parsers.corbagen import CorbaGen
+from cchloader.parsers.infpa import Infpa
 from cchloader.exceptions import ParserNotFoundException
 from cchloader.file import PackedCchFile, CchFile
 
@@ -56,6 +57,9 @@ with description('Testing of parsers'):
             'CORBAGEN_202403.0'  # Documented
         ]
         self.wrong_filename = 'P1_20170507_20170706.6'
+        self.infpa_filenames = [
+            'INFPA_H3_1234_P2_202401.0.bz2'  # Documented
+        ]
 
     with it('test to get F1 parser'):
         for filename in self.f1_filenames:
@@ -173,6 +177,18 @@ with description('Testing of parsers'):
                 result_corbagen = line['orig']
                 assert result_corbagen == expected_corbagen
                 break
+
+    with it('test to get INFPA parser'):
+        for filename in self.infpa_filenames:
+            expect(get_parser(filename)).to(equal(Infpa))
+    with it('INFPA parser fits file format'):
+        with PackedCchFile('spec/curve_files/INFPA_H3_1234_P2_202401.0.bz2') as packed:
+            for cch_file in packed:
+                for line in cch_file:
+                    expected_infpa = 'ES1234000000002267QR1F001;0;20;\n'
+                    result_infpa = line['orig']
+                    assert result_infpa == expected_infpa
+                    break
 
     with it('test error to get exception'):
         def test_raise_error():

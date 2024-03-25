@@ -17,6 +17,7 @@ Eina d'importació de CCH
 - `CORBAGEN`
 - `F1`
 - `F5D`
+- `INFPA`
 - `MEDIDAS`
 - `MHCIL`
 - `P1`
