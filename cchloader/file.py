@@ -104,10 +104,16 @@ class CchFile(object):
     def __next__(self):
         return self.next()
 
+    @staticmethod
+    def _bytes_to_unicode(data):
+        return {x: y.decode() if isinstance(y, bytes) else y for x, y in data.items()}
+
     def next(self):
         for line in self.fd:
             try:
+                # data, errors = self.parser.parse_line(line)
                 data, errors = self.parser.parse_line(line)
+                data = self._bytes_to_unicode(data)
 #                if errors:
 #                    self.stats.errors.append(
 #                        (self.stats.line_number, errors)
