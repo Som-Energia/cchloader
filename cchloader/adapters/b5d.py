@@ -12,7 +12,7 @@ class B5dBaseAdapter(Schema):
 
     @pre_load
     def fix_numbers(self, data):
-        for attr, field in self.fields.iteritems():
+        for attr, field in self.fields.items():
             if isinstance(field, fields.Integer):
                 if not data.get(attr):
                     data[attr] = None
