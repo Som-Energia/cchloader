@@ -20,7 +20,7 @@ class MhcilBaseAdapter(Schema):
 
     @pre_load
     def fix_ae(self, data):
-        ae = data.get('ae', 0)
+        ae = int(data.get('ae', 0))
         if ae < 0:
             data['ae'] = 0
 

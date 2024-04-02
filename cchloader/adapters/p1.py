@@ -50,13 +50,13 @@ class P1BaseAdapter(Schema):
 
     @pre_load
     def valid_measure(self, data):
-        aoquality = data.get('aoquality')
-        r1quality = data.get('r1quality')
-        r2quality = data.get('r2quality')
-        r3quality = data.get('r3quality')
-        r4quality = data.get('r4quality')
-        reserve1quality = data.get('reserve1quality')
-        reserve2quality = data.get('reserve2quality')
+        aoquality = int(data.get('aoquality'))
+        r1quality = int(data.get('r1quality'))
+        r2quality = int(data.get('r2quality'))
+        r3quality = int(data.get('r3quality'))
+        r4quality = int(data.get('r4quality'))
+        reserve1quality = int(data.get('reserve1quality'))
+        reserve2quality = int(data.get('reserve2quality'))
 
         aovalid = 0
         if aoquality < 128:
