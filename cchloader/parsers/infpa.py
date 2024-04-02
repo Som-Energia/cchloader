@@ -6,6 +6,10 @@ from cchloader.utils import build_dict
 from cchloader.adapters.infpa import InfpaAdapter
 from cchloader.models.infpa import InfpaSchema
 from cchloader.parsers.parser import Parser, register
+import six
+if six.PY3:
+    unicode = str
+
 
 
 class Infpa(Parser):
@@ -27,7 +31,7 @@ class Infpa(Parser):
 
     def parse_line(self, line):
         slinia = tuple(unicode(line.decode(self.encoding)).split(self.delimiter))
-        slinia = map(lambda s: s.strip(), slinia)
+        slinia = list(map(lambda s: s.strip(), slinia))
         parsed = {'infpa': {}, 'orig': line}
         data = build_dict(self.headers, slinia)
         result, errors = self.adapter.load(data)

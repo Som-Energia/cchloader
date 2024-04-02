@@ -6,6 +6,9 @@ from cchloader.utils import build_dict
 from cchloader.adapters.mhcil import MhcilAdapter
 from cchloader.models.mhcil import MhcilSchema
 from cchloader.parsers.parser import Parser, register
+import six
+if six.PY3:
+    unicode = str
 
 
 class Mhcil(Parser):
@@ -27,7 +30,7 @@ class Mhcil(Parser):
 
     def parse_line(self, line):
         slinia = tuple(unicode(line.decode(self.encoding)).split(self.delimiter))
-        slinia = map(lambda s: s.strip(), slinia)
+        slinia = list(map(lambda s: s.strip(), slinia))
         parsed = {'mhcil': {}, 'orig': line}
         data = build_dict(self.headers, slinia)
         result, errors = self.adapter.load(data)
