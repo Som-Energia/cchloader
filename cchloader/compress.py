@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
-
+from __future__ import absolute_import, unicode_literals
+import six
 import struct
 import zipfile
 import gzip
@@ -18,8 +18,8 @@ class CompressedFile (object):
         self.filename = filename
 
     @classmethod
-    def is_magic(self, data):
-        return data.startswith(self.magic)
+    def is_magic(cls, data):
+        return data.decode().startswith(cls.magic)
 
     def open(self):
         return None
@@ -104,7 +104,10 @@ class BZFile (CompressedFile):
         self.files = self.list()
 
     def open(self):
-        return bz2.BZ2File(self.filename)
+        _file = bz2.BZ2File(self.filename)
+        if six.PY3:
+            setattr(_file, 'name', self.filename)
+        return _file
 
     def list(self):
         # BZ2 file does not include original filename
@@ -131,7 +134,7 @@ def is_compressed_data(fd):
     return False
 
 def is_compressed_file(filename):
-    with file(filename, 'rb') as f:
+    with open(filename, 'rb') as f:
         start_of_file = f.read(5)
         f.seek(0)
         for cls in (ZIPFile, GZFile, BZFile):
@@ -140,7 +143,7 @@ def is_compressed_file(filename):
         return False
 
 def get_compressed_file(filename):
-    with file(filename, 'rb') as f:
+    with open(filename, 'rb') as f:
         start_of_file = f.read(5)
         f.seek(0)
         for cls in (ZIPFile, GZFile, BZFile):

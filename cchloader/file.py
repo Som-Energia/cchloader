@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 import bz2
-from StringIO import StringIO
+from io import BytesIO
 
 from cchloader.parsers.parser import get_parser
 from cchloader import logger
@@ -42,6 +42,9 @@ class PackedCchFile(object):
             return sf
         raise StopIteration()
 
+    def __next__(self):
+        return self.next()
+
     def __enter__(self):
         return self
 
@@ -79,16 +82,16 @@ class CchFile(object):
         else:
             self.parser = parser
         if fd is None:
-            self.fd = open(path, 'r')
+            self.fd = open(path, 'rb')
         else:
             try:
                 file_content = fd.read()
                 # ZipExtFile has no seek method
-                tmp_fd = StringIO(file_content)
+                tmp_fd = BytesIO(file_content)
                 if is_compressed_data(tmp_fd):
                     # bz compressed files ina zip file
                     data = bz2.decompress(file_content)
-                    bzfd = StringIO(data)
+                    bzfd = BytesIO(data)
                     self.fd = bzfd
                 else:
                     self.fd = tmp_fd
@@ -98,10 +101,19 @@ class CchFile(object):
     def __iter__(self):
         return self
 
+    def __next__(self):
+        return self.next()
+
+    @staticmethod
+    def _bytes_to_unicode(data):
+        return {x: y.decode() if isinstance(y, bytes) else y for x, y in data.items()}
+
     def next(self):
         for line in self.fd:
             try:
+                # data, errors = self.parser.parse_line(line)
                 data, errors = self.parser.parse_line(line)
+                data = self._bytes_to_unicode(data)
 #                if errors:
 #                    self.stats.errors.append(
 #                        (self.stats.line_number, errors)

@@ -6,6 +6,9 @@ from cchloader.utils import build_dict
 from cchloader.adapters.f1 import F1Adapter
 from cchloader.models.f1 import F1Schema
 from cchloader.parsers.parser import Parser, register
+import six
+if six.PY3:
+    unicode = str
 
 
 class F1(Parser):
@@ -36,7 +39,7 @@ class F1(Parser):
 
     def parse_line(self, line):
         slinia = tuple(unicode(line.decode(self.encoding)).split(self.delimiter))
-        slinia = map(lambda s: s.strip(), slinia)
+        slinia = list(map(lambda s: s.strip(), slinia))
         parsed = {'f1': {}, 'orig': line}
         data = build_dict(self.headers, slinia)
         result, errors = self.adapter.load(data)

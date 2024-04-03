@@ -12,7 +12,7 @@ class MhcilBaseAdapter(Schema):
 
     @pre_load
     def fix_numbers(self, data):
-        for attr, field in self.fields.iteritems():
+        for attr, field in self.fields.items():
             if isinstance(field, (fields.Integer, fields.Float)):
                 if not data.get(attr):
                     data[attr] = None
@@ -20,7 +20,7 @@ class MhcilBaseAdapter(Schema):
 
     @pre_load
     def fix_ae(self, data):
-        ae = data.get('ae', 0)
+        ae = int(data.get('ae', 0))
         if ae < 0:
             data['ae'] = 0
 
