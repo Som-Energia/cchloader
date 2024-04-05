@@ -31,7 +31,7 @@ class CorbaGen(Parser):
     def parse_line(self, line):
         slinia = tuple(unicode(line.decode(self.encoding)).split(self.delimiter))
         slinia = list(map(lambda s: s.strip(), slinia))
-        parsed = {'corbagen': {}, 'orig': line}
+        parsed = {'giscedata_corbagen': {}, 'orig': line}
         data = build_dict(self.headers, slinia)
         result, errors = self.adapter.load(data)
         if errors:
