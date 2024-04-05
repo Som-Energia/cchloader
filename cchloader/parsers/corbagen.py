@@ -36,7 +36,7 @@ class CorbaGen(Parser):
         result, errors = self.adapter.load(data)
         if errors:
             logger.error(errors)
-        parsed['corbagen'] = result
+        parsed['giscedata_corbagen'] = result
         return parsed, errors
 
 
