@@ -19,7 +19,10 @@ class CompressedFile (object):
 
     @classmethod
     def is_magic(cls, data):
-        return data.decode().startswith(cls.magic)
+        try:
+            return data.decode().startswith(cls.magic)
+        except:
+            return data.startswith(cls.magic)
 
     def open(self):
         return None
@@ -29,7 +32,7 @@ class CompressedFile (object):
 
 
 class ZIPFile (CompressedFile):
-    magic = '\x50\x4b\x03\x04'
+    magic = b'\x50\x4b\x03\x04'
     file_type = 'zip'
     mime_type = 'compressed/zip'
 
@@ -49,7 +52,7 @@ class ZIPFile (CompressedFile):
 
 
 class GZFile (CompressedFile):
-    magic = '\x1f\x8b\x08'
+    magic = b'\x1f\x8b\x08'
     file_type = 'gz'
     mime_type = 'compressed/gz'
 
@@ -94,7 +97,7 @@ class GZFile (CompressedFile):
 
 
 class BZFile (CompressedFile):
-    magic = '\x42\x5a\x68'
+    magic = b'\x42\x5a\x68'
     file_type = 'bz2'
     mime_type = 'compressed/bz'
 
