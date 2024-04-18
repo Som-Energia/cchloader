@@ -55,8 +55,8 @@ class P1BaseAdapter(Schema):
         r2quality = int(data.get('r2quality'))
         r3quality = int(data.get('r3quality'))
         r4quality = int(data.get('r4quality'))
-        reserve1quality = int(data.get('reserve1quality'))
-        reserve2quality = int(data.get('reserve2quality'))
+        reserve1quality = int(data.get('reserve1quality') or 0)
+        reserve2quality = int(data.get('reserve2quality') or 0)
 
         aovalid = 0
         if aoquality < 128:
