@@ -21,7 +21,10 @@ def get_utc_timestamp_from_datetime_and_season(local_timestamp, season):
     dst = season == 1 and True or False
     timezone_utc = pytz.utc
     timezone_local = pytz.timezone("Europe/Madrid")
-    return (timezone_local.normalize(timezone_local.localize(local_timestamp, is_dst=dst))).astimezone(timezone_utc)
+    utc_timestamp = (timezone_local.normalize(
+        timezone_local.localize(local_timestamp, is_dst=dst))
+    ).astimezone(timezone_utc)
+    return utc_timestamp
 
 class TimescaleDBBackend(BaseBackend):
     """TimescaleDB Backend
@@ -70,7 +73,9 @@ class TimescaleDBBackend(BaseBackend):
 
         # UTC timestamp used by GISCE
         if 'timestamp' in columns:
-            utc_timestamp = get_utc_timestamp_from_datetime_and_season(document['local_timestamp'], document['season'])
+            utc_timestamp = get_utc_timestamp_from_datetime_and_season(
+                document['local_timestamp'], document['season']
+            ).strftime('%Y-%m-%d %H:%M:%S')
             document['timestamp'] = utc_timestamp
 
         if 'created_at' in columns:
@@ -81,7 +86,7 @@ class TimescaleDBBackend(BaseBackend):
 
         # UTC timestamp used by SOM
         if 'utc_timestamp' in columns:
-            document['utc_timestamp'] = get_as_utc_timestamp(document['datetime'])
+            document['utc_timestamp'] = get_as_utc_timestamp(document['datetime']).strftime('%Y-%m-%d %H:%M:%S')
 
         if 'validated' in document and type(document['validated']) == bool:
             document['validated'] = 1 if document['validated'] else 0
