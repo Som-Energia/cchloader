@@ -11,6 +11,20 @@ def get_as_utc_timestamp(t):
     timezone_local = pytz.timezone("Europe/Madrid")
     return timezone_utc.normalize(timezone_local.localize(t, is_dst=False))
 
+def get_utc_timestamp_from_datetime_and_season(local_timestamp, season):
+    """
+    Returns UTC timestamp from local datetime and winter/summer flag
+    :param local_timestamp: datetime (no localized)
+    :param season:
+    :return: datetime (UTC localized)
+    """
+    dst = season == 1 and True or False
+    timezone_utc = pytz.utc
+    timezone_local = pytz.timezone("Europe/Madrid")
+    utc_timestamp = (timezone_local.normalize(
+        timezone_local.localize(local_timestamp, is_dst=dst))
+    ).astimezone(timezone_utc)
+    return utc_timestamp
 
 class TimescaleDBBackend(BaseBackend):
     """TimescaleDB Backend
@@ -42,15 +56,38 @@ class TimescaleDBBackend(BaseBackend):
                     cch.collection = collection
                     self.insert_cch(cch)
 
+    def get_columns(self, collection):
+        self.cr.execute(
+            "SELECT column_name FROM information_schema.columns "
+            "WHERE table_name = %s", (collection, )
+        )
+        return [x[0] for x in self.cr.fetchall()]
 
     def insert_cch(self, cch):
         collection = cch.collection
         document = cch.backend_data
-        document.update({
-            'create_at': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'update_at': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'utc_timestamp': get_as_utc_timestamp(document['datetime']).strftime('%Y-%m-%d %H:%M:%S')
-        })
+
+        columns = self.get_columns(collection)
+
+        timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        # UTC timestamp used by GISCE
+        if 'timestamp' in columns:
+            utc_timestamp = get_utc_timestamp_from_datetime_and_season(
+                document['local_timestamp'], document['season']
+            ).strftime('%Y-%m-%d %H:%M:%S')
+            document['timestamp'] = utc_timestamp
+
+        if 'created_at' in columns:
+            document['created_at'] = timestamp
+
+        if 'updated_at' in columns:
+            document['updated_at'] = timestamp
+
+        # UTC timestamp used by SOM
+        if 'utc_timestamp' in columns:
+            document['utc_timestamp'] = get_as_utc_timestamp(document['datetime']).strftime('%Y-%m-%d %H:%M:%S')
+
         if 'validated' in document and type(document['validated']) == bool:
             document['validated'] = 1 if document['validated'] else 0
 
