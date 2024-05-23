@@ -57,12 +57,16 @@ class TimescaleDBBackend(BaseBackend):
 
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         timestamp_utc = get_as_utc_timestamp(document['datetime'])
+
         if 'created_at' in columns:
             document['created_at'] = timestamp
+
         if 'updated_at' in columns:
             document['updated_at'] = timestamp
+
         if 'utc_timestamp' in columns:
             document['utc_timestamp'] = timestamp_utc
+
         if 'validated' in document and type(document['validated']) == bool:
             document['validated'] = 1 if document['validated'] else 0
 
