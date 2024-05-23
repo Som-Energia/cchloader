@@ -42,15 +42,27 @@ class TimescaleDBBackend(BaseBackend):
                     cch.collection = collection
                     self.insert_cch(cch)
 
+    def get_columns(self, collection):
+        self.cr.execute(
+            "SELECT column_name FROM information_schema.columns "
+            "WHERE table_name = %s", (collection, )
+        )
+        return [x[0] for x in self.cr.fetchall()]
 
     def insert_cch(self, cch):
         collection = cch.collection
         document = cch.backend_data
-        document.update({
-            'create_at': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'update_at': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'utc_timestamp': get_as_utc_timestamp(document['datetime']).strftime('%Y-%m-%d %H:%M:%S')
-        })
+
+        columns = self.get_columns(collection)
+
+        timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        timestamp_utc = get_as_utc_timestamp(document['datetime'])
+        if 'created_at' in columns:
+            document['created_at'] = timestamp
+        if 'updated_at' in columns:
+            document['updated_at'] = timestamp
+        if 'utc_timestamp' in columns:
+            document['utc_timestamp'] = timestamp_utc
         if 'validated' in document and type(document['validated']) == bool:
             document['validated'] = 1 if document['validated'] else 0
 
