@@ -13,8 +13,7 @@ if six.PY3:
 
 class Mhcil(Parser):
 
-    patterns = ['^MHCIL_([H][23CP])_(\d{4})_([PA][12])_(\d{4})(\d{2})(\d{2}).(\d)',
-                '^MHCIL_([H][23CP])_(\d{4})_([PA][12])_(\d{4})(\d{2})(\d{2})']
+    patterns = ['^MHCIL_']
     encoding = "iso-8859-15"
     delimiter = ';'
 
