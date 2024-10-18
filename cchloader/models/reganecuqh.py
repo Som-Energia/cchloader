@@ -29,7 +29,7 @@ class ReganecuQhSchema(Schema):
     tipo_oferta = fields.String(position=20, required=True)
     tipo_upr = fields.Integer(position=21, required=True)
     energia_bilateral = fields.Integer(position=22, required=True)
-    hora = fields.Integer(position=23, required=True)
+    hora25 = fields.Integer(position=23, required=True)
 
 
 ReganecuQhSchema()
