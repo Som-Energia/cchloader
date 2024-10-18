@@ -211,7 +211,7 @@ with description('Testing of parsers'):
                 if l < 3:
                     l += 1
                     continue
-                expected_reganecu = '01/05/2024 00:00;;DEMO_RE;0.014;;1.5042;;0.02;;;BS3;3;;C_BAN;-1;0;18X0000000004444;DSV;P_2BAN;P_3CBAN_OP;R;11;0;;\r\n'
+                expected_reganecu = '27/10/2024 00:00;;DEMO_RE;0.014;;1.5042;;0.02;;;BS3;3;;C_BAN;-1;0;18X0000000004444;DSV;P_2BAN;P_3CBAN_OP;R;11;0;;\r\n'
                 result_reganecu = line['orig']
                 assert result_reganecu == expected_reganecu
                 break
