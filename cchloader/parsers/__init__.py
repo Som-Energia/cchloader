@@ -15,4 +15,5 @@ from cchloader.parsers.rf5d import Rf5d
 from cchloader.parsers.mhcil import Mhcil
 from cchloader.parsers.medidas import Medidas
 from cchloader.parsers.reganecu import Reganecu
+from cchloader.parsers.reganecuqh import ReganecuQh
 from cchloader.parsers.corbagen import CorbaGen
