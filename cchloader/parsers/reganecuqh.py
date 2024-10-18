@@ -13,7 +13,8 @@ if six.PY3:
 
 class ReganecuQh(Parser):
 
-    patterns = ['^_reganecuqh_']
+    patterns = ['^([ABC])(\d{1})_reganecuqh_',
+                '^reganecuqh_']
     encoding = "iso-8859-15"
     delimiter = ';'
 
