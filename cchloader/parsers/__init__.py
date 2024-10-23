@@ -12,6 +12,7 @@ from cchloader.parsers.b5d import B5d
 from cchloader.parsers.p2 import P2
 from cchloader.parsers.p2d import P2D
 from cchloader.parsers.rf5d import Rf5d
+from cchloader.parsers.mcilqh import McilQh
 from cchloader.parsers.mhcil import Mhcil
 from cchloader.parsers.medidas import Medidas
 from cchloader.parsers.reganecu import Reganecu
