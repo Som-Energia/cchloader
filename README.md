@@ -18,6 +18,7 @@ Eina d'importació de CCH
 - `F1`
 - `F5D`
 - `INFPA`
+- `MCILQH`
 - `MEDIDAS`
 - `MHCIL`
 - `P1`
