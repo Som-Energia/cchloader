@@ -8,6 +8,7 @@ from cchloader.parsers.p2 import P2
 from cchloader.parsers.a5d import A5d
 from cchloader.parsers.b5d import B5d
 from cchloader.parsers.rf5d import Rf5d
+from cchloader.parsers.mcilqh import McilQh
 from cchloader.parsers.mhcil import Mhcil
 from cchloader.parsers.medidas import Medidas
 from cchloader.parsers.corbagen import CorbaGen
@@ -67,6 +68,9 @@ with description('Testing of parsers'):
         self.wrong_filename = 'P1_20170507_20170706.6'
         self.infpa_filenames = [
             'INFPA_H3_1234_P2_202401.0.bz2'  # Documented
+        ]
+        self.mcilqh_filenames = [
+            'MCILQH_20240501_demo'  # Documented
         ]
 
     with it('test to get F1 parser'):
@@ -234,3 +238,14 @@ with description('Testing of parsers'):
 
         expect(test_raise_error).to(raise_error(
             ParserNotFoundException))
+
+    with it('test to get MCILQH parser'):
+        for filename in self.mcilqh_filenames:
+            expect(get_parser(filename)).to(equal(McilQh))
+    with it('MCILQH parser fits file format'):
+        with CchFile('spec/curve_files/MCILQH_20240501_demo') as cch_file:
+            for line in cch_file:
+                expected_mcilqh = 'ES0044444444444444441F001;2024;05;01;00;15;0;0;0;0;0;0;0;R;\n'
+                result_mcilqh = line['orig']
+                assert result_mcilqh == expected_mcilqh
+                break
