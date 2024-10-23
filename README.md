@@ -25,4 +25,5 @@ Eina d'importació de CCH
 - `P2`
 - `P2D`
 - `REGANECU`
+- `REGANECUQH`
 - `RF5D`

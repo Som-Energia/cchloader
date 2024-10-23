@@ -14,8 +14,7 @@ if six.PY3:
 
 class Medidas(Parser):
 
-    patterns = ['^medidas_(\d{4})_(\d{4})(\d{2})_(\d{1})_(\d{4})(\d{2})(\d{2})',
-                '^medidas_(\d{4})_(\d{4})_(\d{4})(\d{2})_(\d{1})_(\d{4})(\d{2})(\d{2})']
+    patterns = ['^medidas_']
     encoding = "iso-8859-15"
     delimiter = ';'
 

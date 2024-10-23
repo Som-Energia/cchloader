@@ -12,6 +12,8 @@ from cchloader.parsers.mhcil import Mhcil
 from cchloader.parsers.medidas import Medidas
 from cchloader.parsers.corbagen import CorbaGen
 from cchloader.parsers.infpa import Infpa
+from cchloader.parsers.reganecu import Reganecu
+from cchloader.parsers.reganecuqh import ReganecuQh
 from cchloader.exceptions import ParserNotFoundException
 from cchloader.file import PackedCchFile, CchFile
 
@@ -55,6 +57,12 @@ with description('Testing of parsers'):
         ]
         self.corbagen_filenames = [
             'CORBAGEN_202403.0'  # Documented
+        ]
+        self.reganecu_filenames = [
+            'C3_reganecu_20240501_demo'  # Documented
+        ]
+        self.reganecuqh_filenames = [
+            'C3_reganecuqh_20240501_demo'  # Documented
         ]
         self.wrong_filename = 'P1_20170507_20170706.6'
         self.infpa_filenames = [
@@ -176,6 +184,36 @@ with description('Testing of parsers'):
                 expected_corbagen = 'ES1234000000000001JN0F001;2024-03-01 01:00;0;0;0;0;\n'
                 result_corbagen = line['orig']
                 assert result_corbagen == expected_corbagen
+                break
+
+    with it('test to get REGANECU parser'):
+        for filename in self.reganecu_filenames:
+            expect(get_parser(filename)).to(equal(Reganecu))
+    with it('REGANECU parser fits file format'):
+        with CchFile('spec/curve_files/C3_reganecu_20240501_demo') as cch_file:
+            l = 1
+            for line in cch_file:
+                if l < 3:
+                    l += 1
+                    continue
+                expected_reganecu = '01/05/2024;6;DEMO_RE;0.014;;1.5042;;0.02;;;BS3;3;;C_BAN;-1;0;18X0000000004444;DSV;P_2BAN;P_3CBAN_OP;R;11;0;0;\r\n'
+                result_reganecu = line['orig']
+                assert result_reganecu == expected_reganecu
+                break
+
+    with it('test to get REGANECUQH parser'):
+        for filename in self.reganecuqh_filenames:
+            expect(get_parser(filename)).to(equal(ReganecuQh))
+    with it('REGANECUQH parser fits file format'):
+        with CchFile('spec/curve_files/C3_reganecuqh_20240501_demo') as cch_file:
+            l = 1
+            for line in cch_file:
+                if l < 3:
+                    l += 1
+                    continue
+                expected_reganecu = '27/10/2024 00:00;;DEMO_RE;0.014;;1.5042;;0.02;;;BS3;3;;C_BAN;-1;0;18X0000000004444;DSV;P_2BAN;P_3CBAN_OP;R;11;0;;\r\n'
+                result_reganecu = line['orig']
+                assert result_reganecu == expected_reganecu
                 break
 
     with it('test to get INFPA parser'):
