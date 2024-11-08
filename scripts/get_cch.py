@@ -46,8 +46,8 @@ def get_cch(c):
          print "Loading {} CCH curves".format(provider['name'])
          try:
              c.TgComerReader.reader([provider['id']])
-         except Exception as e:
-             print "Error loding {} CCH curves with the next error {}".format(provider['name'], e.message)
+         except:
+             print "Error loding {} CCH curves".format(provider['name'])
 
 if __name__ == "__main__":
    config_connection(auto_envvar_prefix='PEEK')
