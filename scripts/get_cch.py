@@ -44,7 +44,10 @@ def get_cch(c):
     providers = c.TgComerProvider.read(provider_ids, [])
     for provider in providers:
          print "Loading {} CCH curves".format(provider['name'])
-         c.TgComerReader.reader([provider['id']])
+         try:
+             c.TgComerReader.reader([provider['id']])
+         except:
+             print "Error loding {} CCH curves".format(provider['name'])
 
 if __name__ == "__main__":
    config_connection(auto_envvar_prefix='PEEK')
