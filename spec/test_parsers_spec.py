@@ -184,11 +184,15 @@ with description('Testing of parsers'):
             expect(get_parser(filename)).to(equal(CorbaGen))
     with it('CORBAGEN parser fits file format'):
         with CchFile('spec/curve_files/CORBAGEN_202403.0') as cch_file:
+            line_number = 0
             for line in cch_file:
-                expected_corbagen = 'ES1234000000000001JN0F001;2024-03-01 01:00;0;0;0;0;\n'
+                expected_corbagen = 'ES1234000000000001JN0F001;2024-03-01 07:00;0;80.534;0;80.534;\n'
                 result_corbagen = line['orig']
-                assert result_corbagen == expected_corbagen
-                break
+                if line_number == 6:
+                    assert result_corbagen == expected_corbagen
+                    break
+                line_number += 1
+            assert line_number == 6
 
     with it('test to get REGANECU parser'):
         for filename in self.reganecu_filenames:
