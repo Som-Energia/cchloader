@@ -63,7 +63,7 @@ with description('Testing of parsers'):
             'C3_reganecu_20240501_demo'  # Documented
         ]
         self.reganecuqh_filenames = [
-            'C3_reganecuqh_20240501_demo'  # Documented
+            'C3_reganecuQH_20240501_demo'  # Documented
         ]
         self.wrong_filename = 'P1_20170507_20170706.6'
         self.infpa_filenames = [
@@ -213,7 +213,7 @@ with description('Testing of parsers'):
         for filename in self.reganecuqh_filenames:
             expect(get_parser(filename)).to(equal(ReganecuQh))
     with it('REGANECUQH parser fits file format'):
-        with CchFile('spec/curve_files/C3_reganecuqh_20240501_demo') as cch_file:
+        with CchFile('spec/curve_files/C3_reganecuQH_20240501_demo') as cch_file:
             l = 1
             for line in cch_file:
                 if l < 3:
