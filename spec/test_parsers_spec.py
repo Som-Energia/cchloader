@@ -8,6 +8,7 @@ from cchloader.parsers.p2 import P2
 from cchloader.parsers.a5d import A5d
 from cchloader.parsers.b5d import B5d
 from cchloader.parsers.rf5d import Rf5d
+from cchloader.parsers.f5d import F5d
 from cchloader.parsers.mcilqh import McilQh
 from cchloader.parsers.mhcil import Mhcil
 from cchloader.parsers.medidas import Medidas
@@ -45,6 +46,12 @@ with description('Testing of parsers'):
         self.b5d_filenames = [
             'B5D_4321_1234_20170507.0',  # Documented
             'B5D_0189_0373_20210219.0.bz2',  # GISCE
+        ]
+        self.f5d_filenames = [
+            'F5D_0237_0762_20211008.0',  # Documented
+        ]
+        self.f5d_filenames_ree = [
+            'F5D_0238_0762_20211008.0',  # Documented
         ]
         self.rf5d_filenames = [
             'RF5D_0237_0762_20211008.0',  # Documented
@@ -147,6 +154,24 @@ with description('Testing of parsers'):
                 expected_rf5d = 'ES0237000000130940CT0F;2021/06/01 01:00;1;189;;;;;;1;0;TA/202100018520;\r\n'
                 result_rf5d = line['orig']
                 assert result_rf5d == expected_rf5d
+                break
+
+    with it('test to get F5D parser'):
+        for filename in self.f5d_filenames:
+            expect(get_parser(filename)).to(equal(F5d))
+    with it('F5D(REE) parser fits file format'):
+        with CchFile('spec/curve_files/F5D_0238_0762_20211008.0') as cch_file:
+            for line in cch_file:
+                expected_f5d = 'ES0237000000130940CT0F;2021/06/01 01:00;1;189;;;;;;1;0;TA/202100018520;\r\n'
+                result_f5d = line['orig']
+                assert result_f5d == expected_f5d
+                break
+    with it('F5D(CNMC) parser fits file format'):
+        with CchFile('spec/curve_files/F5D_0237_0762_20211008.0') as cch_file:
+            for line in cch_file:
+                expected_f5d = 'ES0237000000130940CT0F;2021/06/01 01:00;1;189;;;;;;1;0;TA/202100018520;0;0\r\n'
+                result_f5d = line['orig']
+                assert result_f5d == expected_f5d
                 break
 
     with it('test to get MHCIL parser'):
