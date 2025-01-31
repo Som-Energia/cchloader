@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+"""Setup per la llibreria de cchloader"""
+
+import os
 from setuptools import setup, find_packages
 
 readme = open("README.md").read()
@@ -7,7 +11,7 @@ with open('requirements.txt', 'r') as f:
 
 setup(
     name='cchloader',
-    version='0.4.8',
+    version='0.4.9',
     packages=find_packages(),
     url='https://github.com/Som-Energia/cchloader',
     license='GPLv3',
