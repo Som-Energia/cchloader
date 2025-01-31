@@ -7,32 +7,33 @@ concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  PYENV_ROOT: /home/runner/.pyenv
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
         python-version: [ "2.7" ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
-      - name: Set up Python ${{ matrix.python-version }}
-        if: matrix.python-version != '2.7'
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Set up Python 2.7
-        if: matrix.python-version == '2.7'
+
+      - name: Install pyenv
         run: |
-          sudo apt-get update
-          sudo apt-get install -y python2.7 python2.7-dev
-          sudo ln -sf python2.7 /usr/bin/python
-          curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
-          python get-pip.py
-          rm get-pip.py
+          curl https://pyenv.run | bash
+          echo "$PYENV_ROOT/bin" >> $GITHUB_PATH
+          echo "$PYENV_ROOT/shims" >> $GITHUB_PATH
+
+      - name: Install Python ${{ matrix.python-version }}
+        run: |
+          pyenv install ${{ matrix.python-version }}
+          pyenv global ${{ matrix.python-version }}
           pip install --upgrade pip setuptools wheel
+
       - name: Install dependencies
         run: |
           cd ${{github.workspace}}
