@@ -2,9 +2,12 @@ from setuptools import setup, find_packages
 
 readme = open("README.md").read()
 
+with open('requirements.txt', 'r') as f:
+    INSTALL_REQUIRES = f.readlines()
+
 setup(
     name='cchloader',
-    version='0.4.7',
+    version='0.4.8',
     packages=find_packages(),
     url='https://github.com/Som-Energia/cchloader',
     license='GPLv3',
@@ -21,14 +24,6 @@ setup(
     package_data={
         'cchloader': ['data/*']
     },
-    install_requires=[
-        "raven",
-        "pymongo<3.0",
-        "osconf",
-        "marshmallow>=2.13.5",
-        "click",
-        "pytz",
-        "psycopg2-binary"
-    ],
+    install_requires=INSTALL_REQUIRES,
     test_suite='tests',
 )
