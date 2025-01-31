@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+"""Setup per la llibreria de cchloader"""
+
+import os
 from setuptools import setup, find_packages
 
 readme = open("README.md").read()
