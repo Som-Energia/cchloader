@@ -19,5 +19,6 @@ class CchFactSchema(Schema):
     source = fields.Integer(position=9, validate=OneOf([1, 2, 3, 4, 5, 6]))
     validated = fields.Boolean(position=10)
     bill = fields.String(position=11)
-
+    ai_fix = fields.Integer(position=12, allow_none=True)
+    ao_fix = fields.Integer(position=13, allow_none=True)
 CchFactSchema()
