@@ -29,7 +29,7 @@ class Clean(_clean):
 
 setup(
     name='cchloader',
-    version='0.4.10',
+    version='0.4.11',
     packages=find_packages(),
     url='https://github.com/Som-Energia/cchloader',
     license='GPLv3',
