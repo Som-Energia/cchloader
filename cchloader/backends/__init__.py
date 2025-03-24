@@ -1,6 +1,14 @@
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
-from urlparse import urlparse as std_urlparse
+try:
+    # Intentem importar per Python 2
+    from urlparse import urlparse as std_urlparse
+except ImportError:
+    # Si no és Python 2, intentem importar per Python 3
+    from urllib.parse import urlparse
+    std_urlparse = urlparse  # A la versió 3 utilitzem el mateix nom
+
 from cchloader.backends.base import BaseBackend
 
 _AVAILABLE_BACKENDS = {}

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
 from cchloader import logger
@@ -5,12 +6,14 @@ from cchloader.utils import build_dict
 from cchloader.adapters.mhcil import MhcilAdapter
 from cchloader.models.mhcil import MhcilSchema
 from cchloader.parsers.parser import Parser, register
+import six
+if six.PY3:
+    unicode = str
 
 
 class Mhcil(Parser):
 
-    patterns = ['^MHCIL_([H][23CP])_(\d{4})_([PA][12])_(\d{4})(\d{2})(\d{2}).(\d)',
-                '^MHCIL_([H][23CP])_(\d{4})_([PA][12])_(\d{4})(\d{2})(\d{2})']
+    patterns = ['^MHCIL_']
     encoding = "iso-8859-15"
     delimiter = ';'
 
@@ -26,7 +29,7 @@ class Mhcil(Parser):
 
     def parse_line(self, line):
         slinia = tuple(unicode(line.decode(self.encoding)).split(self.delimiter))
-        slinia = map(lambda s: s.strip(), slinia)
+        slinia = list(map(lambda s: s.strip(), slinia))
         parsed = {'mhcil': {}, 'orig': line}
         data = build_dict(self.headers, slinia)
         result, errors = self.adapter.load(data)

@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from cchloader.adapters import CchAdapter
 from cchloader.adapters.p1 import P1BaseAdapter
 from cchloader.models.p1 import P1Schema

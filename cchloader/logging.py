@@ -11,6 +11,7 @@
         logger.info('Info message')
 """
 from __future__ import absolute_import
+from six import string_types
 
 import logging
 
@@ -56,7 +57,7 @@ def setup_logging(level=None, logfile=None):
         sentry_handler = SentryHandler(sentry, level=logging.ERROR)
         logger.addHandler(sentry_handler)
 
-    if isinstance(level, basestring):
+    if isinstance(level, string_types):
         level = getattr(logging, level.upper(), None)
 
     if level is None:

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
 from cchloader import logger
@@ -5,6 +6,9 @@ from cchloader.utils import build_dict
 from cchloader.adapters.b5d import B5dAdapter
 from cchloader.models.cch_gennetabeta import CchGenNetaBetaSchema
 from cchloader.parsers.parser import Parser, register
+import six
+if six.PY3:
+    unicode = str
 
 
 class B5d(Parser):
@@ -25,7 +29,7 @@ class B5d(Parser):
 
     def parse_line(self, line):
         slinia = tuple(unicode(line.decode(self.encoding)).split(self.delimiter))
-        slinia = map(lambda s: s.strip(), slinia)
+        slinia = list(map(lambda s: s.strip(), slinia))
         parsed = {'cch_gennetabeta': {}, 'orig': line}
         data = build_dict(self.headers, slinia)
         result, errors = self.adapter.load(data)

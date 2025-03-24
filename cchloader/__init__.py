@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import
 import os
 
@@ -6,11 +7,12 @@ from osconf import config_from_environment
 try:
     VERSION = __import__('pkg_resources') \
         .get_distribution(__name__).version
-except Exception, e:
+except Exception as e:
     VERSION = 'unknown'
 
+from . import monkeypatch_loader
 
-from cchloader.logging import setup_logging
+from .logging import setup_logging
 
 logging_config = config_from_environment('CCHLOADER_LOGGING')
 

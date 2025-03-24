@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from cchloader.backends import BaseBackend, register, urlparse
 from cchloader.compress import is_compressed_file
 from collections import defaultdict, OrderedDict
@@ -14,13 +17,27 @@ def get_as_utc_timestamp(t, cups, season=None):
     is_dst = season==1
     return timezone_utc.normalize(timezone_local.localize(t, is_dst=is_dst))
 
+def get_utc_timestamp_from_datetime_and_season(local_timestamp, season):
+    """
+    Returns UTC timestamp from local datetime and winter/summer flag
+    :param local_timestamp: datetime (no localized)
+    :param season:
+    :return: datetime (UTC localized)
+    """
+    dst = season == 1 and True or False
+    timezone_utc = pytz.utc
+    timezone_local = pytz.timezone("Europe/Madrid")
+    utc_timestamp = (timezone_local.normalize(
+        timezone_local.localize(local_timestamp, is_dst=dst))
+    ).astimezone(timezone_utc)
+    return utc_timestamp
 
 class TimescaleDBBackend(BaseBackend):
     """TimescaleDB Backend
     """
     batch_size = 500
     collection_prefix = 'tg_'
-    collections = ['f1', 'p1', 'cchfact', 'cchval']
+    collections = ['f1', 'p1', 'cchfact', 'cchval', 'giscedata_corbagen']
 
     def __init__(self, uri=None):
         if uri is None:
@@ -36,6 +53,13 @@ class TimescaleDBBackend(BaseBackend):
                 " password=" + self.config['password']
         self.db = psycopg2.connect(ts_con)
         self.cr = self.db.cursor()
+
+    def get_columns(self, collection):
+        self.cr.execute(
+            "SELECT column_name FROM information_schema.columns "
+            "WHERE table_name = %s", (collection, )
+        )
+        return [x[0] for x in self.cr.fetchall()]
 
 
     def insert(self, document):
@@ -55,13 +79,31 @@ class TimescaleDBBackend(BaseBackend):
 
     def insert_cch_batch(self, collection, curves):
         batch = []
+        columns = self.get_columns(collection)
+        timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         for curve in curves:
             curve.update({
-                'create_date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'create_date': timestamp,
                 'create_uid': 1,
-                'utc_timestamp': get_as_utc_timestamp(curve['datetime'], curve['name'], curve.get('season')).strftime('%Y-%m-%d %H:%M:%S')
             })
 
+            # UTC timestamp used by GISCE
+            if 'timestamp' in columns:
+                utc_timestamp = get_utc_timestamp_from_datetime_and_season(
+                    document['local_timestamp'], document['season']
+                ).strftime('%Y-%m-%d %H:%M:%S')
+                curve['timestamp'] = utc_timestamp
+
+            if 'created_at' in columns:
+                curve['created_at'] = timestamp
+
+            if 'updated_at' in columns:
+                curve['updated_at'] = timestamp
+
+
+            # UTC timestamp used by SOM
+            if 'utc_timestamp' in columns:
+                document['utc_timestamp'] = get_as_utc_timestamp(curve['datetime'], curve['name'], curve.get('season')).strftime('%Y-%m-%d %H:%M:%S')
             if collection != "tg_cchval":
                 if 'validated' not in curve:
                     curve['validated'] = 0
@@ -123,3 +165,4 @@ class TimescaleDBBackend(BaseBackend):
 
 
 register("timescale", TimescaleDBBackend)
+

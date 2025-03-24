@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from cchloader.adapters import CchAdapter
 from cchloader.models.p1 import P1Schema
 from marshmallow import Schema, fields, pre_load
@@ -9,7 +12,7 @@ class P1BaseAdapter(Schema):
 
     @pre_load
     def fix_numbers(self, data):
-        for attr, field in self.fields.iteritems():
+        for attr, field in self.fields.items():
             if isinstance(field, (fields.Integer, fields.Float)):
                 if not data.get(attr):
                     data[attr] = None
@@ -47,13 +50,13 @@ class P1BaseAdapter(Schema):
 
     @pre_load
     def valid_measure(self, data):
-        aoquality = data.get('aoquality')
-        r1quality = data.get('r1quality')
-        r2quality = data.get('r2quality')
-        r3quality = data.get('r3quality')
-        r4quality = data.get('r4quality')
-        reserve1quality = data.get('reserve1quality')
-        reserve2quality = data.get('reserve2quality')
+        aoquality = int(data.get('aoquality') or 0)
+        r1quality = int(data.get('r1quality') or 0)
+        r2quality = int(data.get('r2quality') or 0)
+        r3quality = int(data.get('r3quality') or 0)
+        r4quality = int(data.get('r4quality') or 0)
+        reserve1quality = int(data.get('reserve1quality') or 0)
+        reserve2quality = int(data.get('reserve2quality') or 0)
 
         aovalid = 0
         if aoquality < 128:
