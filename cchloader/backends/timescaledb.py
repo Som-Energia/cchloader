@@ -90,7 +90,7 @@ class TimescaleDBBackend(BaseBackend):
             # UTC timestamp used by GISCE
             if 'timestamp' in columns:
                 utc_timestamp = get_utc_timestamp_from_datetime_and_season(
-                    document['local_timestamp'], document['season']
+                    curve['local_timestamp'], curve['season']
                 ).strftime('%Y-%m-%d %H:%M:%S')
                 curve['timestamp'] = utc_timestamp
 
@@ -103,7 +103,7 @@ class TimescaleDBBackend(BaseBackend):
 
             # UTC timestamp used by SOM
             if 'utc_timestamp' in columns:
-                document['utc_timestamp'] = get_as_utc_timestamp(curve['datetime'], curve['name'], curve.get('season')).strftime('%Y-%m-%d %H:%M:%S')
+                curve['utc_timestamp'] = get_as_utc_timestamp(curve['datetime'], curve['name'], curve.get('season')).strftime('%Y-%m-%d %H:%M:%S')
             if collection != "tg_cchval":
                 if 'validated' not in curve:
                     curve['validated'] = 0
