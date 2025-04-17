@@ -30,11 +30,11 @@ class Clean(_clean):
 
 setup(
     name='cchloader',
-    version='0.4.12',
+    version='4.0.0',
     packages=find_packages(),
     url='https://github.com/Som-Energia/cchloader',
     license='GPLv3',
-    author='Som Energia SCCL',
+    author='Som Energia SCCL & GISCE',
     author_email='info@somenergia.coop',
     long_description=readme,
     long_description_content_type='text/markdown',
