@@ -6,4 +6,3 @@ marshmallow>=2.13.5,<3.0.0
 click<8
 six
 pytz
-psycopg2-binary

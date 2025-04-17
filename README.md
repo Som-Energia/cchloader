@@ -1,9 +1,12 @@
 # CCHLOADER
 
-[![Python tests](https://github.com/Som-Energia/cchloader/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Som-Energia/cchloader/actions/workflows/python-tests.yml)
-
-
 Eina d'importació de CCH
+
+![](https://github.com/gisce/cchloader/actions/workflows/python2.7-app.yml/badge.svg)
+![](https://github.com/gisce/cchloader/actions/workflows/python2.7-app.yml)
+
+![](https://github.com/gisce/cchloader/actions/workflows/python3.11-app.yml/badge.svg)
+![](https://github.com/gisce/cchloader/actions/workflows/python3.11-app.yml)
 
 - Eina per a importar fitxers de corba a Comercialitzadora i a Representació a mercat..
 - Aporta el coneixement i els formats necessaris per a llegir fitxers en diferents formats.
