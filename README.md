@@ -1,10 +1,27 @@
-# cchloader
-
-Python package to create electricity curve (CCH) models from "Distribuidoras" files as CNMC specifications
+# CCHLOADER
 
 [![Python tests](https://github.com/Som-Energia/cchloader/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Som-Energia/cchloader/actions/workflows/python-tests.yml)
 
 
-## CHANGES
+Eina d'importació de CCH
 
-You can view it in [Releases](https://github.com/Som-Energia/cchloader/releases)
+- Eina per a importar fitxers de corba a Comercialitzadora i a Representació a mercat..
+- Aporta el coneixement i els formats necessaris per a llegir fitxers en diferents formats.
+
+## Suporta
+- `A5D`
+- `B5D`
+- `CORBAGEN`
+- `F1`
+- `F5D`
+- `INFPA`
+- `MCILQH`
+- `MEDIDAS`
+- `MHCIL`
+- `P1`
+- `P1D`
+- `P2`
+- `P2D`
+- `REGANECU`
+- `REGANECUQH`
+- `RF5D`

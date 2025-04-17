@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
 import click
 from cchloader.file import CchFile, PackedCchFile
 from cchloader.backends import get_backend
 from cchloader.compress import is_compressed_file
+
 
 @click.group()
 def cchloader():

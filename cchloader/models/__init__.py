@@ -1,6 +1,4 @@
-from marshmallow import Schema, fields
-
-
+# -*- coding: utf-8 -*-
 class Document(object):
     """Document object
 

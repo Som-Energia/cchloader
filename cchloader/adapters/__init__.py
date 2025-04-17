@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from marshmallow import Schema, post_load
 from marshmallow.decorators import tag_processor
 from cchloader.models import Document

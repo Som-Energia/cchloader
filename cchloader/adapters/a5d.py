@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from cchloader.adapters import CchAdapter
 from cchloader.models.cch_autocons import CchAutoconsSchema
 from marshmallow import Schema, fields, pre_load
@@ -9,7 +12,7 @@ class A5dBaseAdapter(Schema):
 
     @pre_load
     def fix_numbers(self, data):
-        for attr, field in self.fields.iteritems():
+        for attr, field in self.fields.items():
             if isinstance(field, fields.Integer):
                 if not data.get(attr):
                     data[attr] = None

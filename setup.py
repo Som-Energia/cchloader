@@ -9,6 +9,7 @@ from setuptools import setup, find_packages
 
 
 readme = open("README.md").read()
+PACKAGES_DATA = {'cchloader': ['data/*']}
 
 with open('requirements.txt', 'r') as f:
     INSTALL_REQUIRES = f.readlines()
@@ -29,7 +30,7 @@ class Clean(_clean):
 
 setup(
     name='cchloader',
-    version='0.4.11',
+    version='0.4.12',
     packages=find_packages(),
     url='https://github.com/Som-Energia/cchloader',
     license='GPLv3',
@@ -43,9 +44,7 @@ setup(
         [console_scripts]
         usmartdata=usmartdata.cli:usmartdata
     ''',
-    package_data={
-        'cchloader': ['data/*']
-    },
+    package_data=PACKAGES_DATA,
     install_requires=INSTALL_REQUIRES,
     tests_require=TESTS_REQUIRE,
     cmdclass={'clean': Clean},

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, print_function
 
 # Script to load all configured and enabled providers on PowerERP
 
@@ -44,12 +45,12 @@ def get_cch(c):
     providers = c.TgComerProvider.read(provider_ids, [])
     for provider in providers:
         try:
-            print "{} Loading {} CCH curves".format(str(datetime.now()), provider['name'])
+            print("{} Loading {} CCH curves".format(str(datetime.now()), provider['name']))
             c.TgComerReader.reader([provider['id']])
         except Exception as e:
-            msg = "{} Error loading {} CCH curves, reason: {}"
+            print("Error loding {} CCH curves, reason: {}".format(provider['name'], str(e)))
 
 if __name__ == "__main__":
-    print "Inici script"
+    print("Inici script")
     config_connection(auto_envvar_prefix='PEEK')
 

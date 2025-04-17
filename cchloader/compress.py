@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+from __future__ import absolute_import, unicode_literals
+import six
 import struct
 import zipfile
 import gzip
 import bz2
+
 
 class CompressedFile (object):
     magic = None
@@ -16,8 +18,11 @@ class CompressedFile (object):
         self.filename = filename
 
     @classmethod
-    def is_magic(self, data):
-        return data.startswith(self.magic)
+    def is_magic(cls, data):
+        try:
+            return data.decode().startswith(cls.magic)
+        except:
+            return data.startswith(cls.magic)
 
     def open(self):
         return None
@@ -27,7 +32,7 @@ class CompressedFile (object):
 
 
 class ZIPFile (CompressedFile):
-    magic = '\x50\x4b\x03\x04'
+    magic = b'\x50\x4b\x03\x04'
     file_type = 'zip'
     mime_type = 'compressed/zip'
 
@@ -47,7 +52,7 @@ class ZIPFile (CompressedFile):
 
 
 class GZFile (CompressedFile):
-    magic = '\x1f\x8b\x08'
+    magic = b'\x1f\x8b\x08'
     file_type = 'gz'
     mime_type = 'compressed/gz'
 
@@ -92,7 +97,7 @@ class GZFile (CompressedFile):
 
 
 class BZFile (CompressedFile):
-    magic = '\x42\x5a\x68'
+    magic = b'\x42\x5a\x68'
     file_type = 'bz2'
     mime_type = 'compressed/bz'
 
@@ -102,7 +107,10 @@ class BZFile (CompressedFile):
         self.files = self.list()
 
     def open(self):
-        return bz2.BZ2File(self.filename)
+        _file = bz2.BZ2File(self.filename)
+        if six.PY3:
+            setattr(_file, 'name', self.filename)
+        return _file
 
     def list(self):
         # BZ2 file does not include original filename
@@ -129,7 +137,7 @@ def is_compressed_data(fd):
     return False
 
 def is_compressed_file(filename):
-    with file(filename, 'rb') as f:
+    with open(filename, 'rb') as f:
         start_of_file = f.read(5)
         f.seek(0)
         for cls in (ZIPFile, GZFile, BZFile):
@@ -138,7 +146,7 @@ def is_compressed_file(filename):
         return False
 
 def get_compressed_file(filename):
-    with file(filename, 'rb') as f:
+    with open(filename, 'rb') as f:
         start_of_file = f.read(5)
         f.seek(0)
         for cls in (ZIPFile, GZFile, BZFile):

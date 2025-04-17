@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from cchloader.backends import BaseBackend, register, urlparse
-from cchloader.compress import is_compressed_file
 import pymongo
 import datetime
+
 
 class MongoDBBackend(BaseBackend):
     """MongoDB Backend
