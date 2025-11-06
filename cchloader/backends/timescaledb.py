@@ -63,10 +63,11 @@ class TimescaleDBBackend(BaseBackend):
 
 
     def insert(self, document):
-        self.insert_batch([document])
+        return self.insert_batch([document])
 
     def insert_batch(self, documents):
         batches_to_insert = defaultdict(list)
+        utc_timestamp = None
         for document in documents:
             for collection in self.collections:
                 if collection in document:
@@ -75,12 +76,14 @@ class TimescaleDBBackend(BaseBackend):
                     batches_to_insert[self.collection_prefix + collection].append(cch.backend_data)
 
         for collection, curves in batches_to_insert.items():
-            self.insert_cch_batch(collection, curves)
+            utc_timestamp = self.insert_cch_batch(collection, curves)
+        return utc_timestamp
 
     def insert_cch_batch(self, collection, curves):
         batch = []
         columns = self.get_columns(collection)
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        utc_timestamp = None
         for curve in curves:
             curve.update({
                 'create_date': timestamp,
@@ -122,6 +125,9 @@ class TimescaleDBBackend(BaseBackend):
                 batch = []
         if batch:
             self.insert_cch_batch_chunk(collection, batch)
+
+        if utc_timestamp:
+            return utc_timestamp
 
     def insert_cch_batch_chunk(self, collection, batch):
         # in the same batch we can't have repeated items as postgresql on conflict will fail
