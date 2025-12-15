@@ -56,6 +56,9 @@ class EPFPF(Parser):
             if field in result.data:
                 result.data.pop(field)
 
+        # Convert to regular curve (using ai, ae, r1, r2, r3, r4 magns instead of magnitud, valor)
+        result.data = self.get_magn(result.data)
+
         parsed['giscedata_epfpf'] = result
         return parsed, errors
 
@@ -73,6 +76,13 @@ class EPFPF(Parser):
         dt = datetime.strptime(dt, '%Y-%m-%d %H:%M:%S')
         season = 1 if final_date.dst().total_seconds() == 3600 else 0
         return dt, season
+
+    def get_magn(self, data):
+        magn = data.get('magnitud').lower()
+        data[magn] = data.get('valor')
+        for field in ['magnitud', 'valor']:
+            data.pop(field, False)
+        return data
 
 
 register(EPFPF)
